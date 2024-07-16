@@ -10,7 +10,7 @@
                     },
                 });
             var n = a(6484);
-            let s = ["./System/ShaderToy/CoastalLandscape/piLibs.js", "./System/ShaderToy/CoastalLandscape/effect.js", "./System/ShaderToy/CoastalLandscape/init.js"],
+            let s = ["/System/ShaderToy/CoastalLandscape/piLibs.js", "/System/ShaderToy/CoastalLandscape/effect.js", "/System/ShaderToy/CoastalLandscape/init.js"],
                 i = async (e) => {
                     if (!e) return;
                     await (0, n.mb)(s);

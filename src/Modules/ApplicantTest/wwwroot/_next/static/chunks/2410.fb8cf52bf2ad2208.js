@@ -156,9 +156,9 @@
                     M = (0, d.sI)(),
                     j = (0, n.useMemo)(() => Math.floor((M - b.bK) / k.startMenu.sideBar.width), [k.startMenu.sideBar.width, M]),
                     H = [
-                        j > 3 ? { action: () => o("FileExplorer", { url: `${b.Sd}/Documents` }, "./System/Icons/documents.webp"), icon: (0, s.jsx)(p.d2, {}), name: "Documents", ...(c && { tooltip: "Documents" }) } : void 0,
-                        j > 4 ? { action: () => o("FileExplorer", { url: `${b.Sd}/Pictures` }, "./System/Icons/pictures.webp"), icon: (0, s.jsx)(p.sI, {}), name: "Pictures", ...(c && { tooltip: "Pictures" }) } : void 0,
-                        j > 5 ? { action: () => o("FileExplorer", { url: `${b.Sd}/Videos` }, "./System/Icons/videos.webp"), icon: (0, s.jsx)(p.kw, {}), name: "Videos", ...(c && { tooltip: "Videos" }) } : void 0,
+                        j > 3 ? { action: () => o("FileExplorer", { url: `${b.Sd}/Documents` }, "./System/Icons/32x32/documents.webp"), icon: (0, s.jsx)(p.d2, {}), name: "Documents", ...(c && { tooltip: "Documents" }) } : void 0,
+                        j > 4 ? { action: () => o("FileExplorer", { url: `${b.Sd}/Pictures` }, "./System/Icons/32x32/pictures.webp"), icon: (0, s.jsx)(p.sI, {}), name: "Pictures", ...(c && { tooltip: "Pictures" }) } : void 0,
+                        j > 5 ? { action: () => o("FileExplorer", { url: `${b.Sd}/Videos` }, "./System/Icons/32x32/videos.webp"), icon: (0, s.jsx)(p.kw, {}), name: "Videos", ...(c && { tooltip: "Videos" }) } : void 0,
                         {
                             action: () => {
                                 l(!0),

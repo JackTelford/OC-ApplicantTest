@@ -1,5 +1,5 @@
 [InternetShortcut]
 BaseURL=FileExplorer
-IconFile=./System/Icons/user.webp
+IconFile=./System/Icons/32x32/user.webp
 Type=System
 URL=/Users/Public

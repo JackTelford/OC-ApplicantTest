@@ -317,7 +317,7 @@
                                         w(d)));
                         }, [m, v, g, A, e, k, x?.mntMap, t, r, d]),
                         (0, o.useEffect)(() => {
-                            !l || c || d || (s(e, "/"), t(e, "/System/Icons/pc.webp"));
+                            !l || c || d || (s(e, "/"), t(e, "./System/Icons/32x32/pc.webp"));
                         }, [c, e, l, t, s, d]),
                         (0, o.useEffect)(() => (l?.addEventListener("keydown", E), () => l?.removeEventListener("keydown", E)), [l, E]),
                         d ? (0, n.jsxs)(M, { children: [(0, n.jsx)(j, { ref: b, hideSearch: !!k, id: e }), (0, n.jsx)(U.Z, { id: e, url: d, view: "icon", showStatusBar: !0 })] }) : null

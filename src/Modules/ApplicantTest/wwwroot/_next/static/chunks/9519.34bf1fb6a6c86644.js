@@ -4,7 +4,7 @@
     {
         9519: function (s) {
             s.exports = JSON.parse(
-                '{"/Users/Public/Desktop":"./System/Icons/32x32/desktop.webp","/Users/Public":"./System/Icons/32x32/user.webp","/Users/Public/Documents":"./System/Icons/32x32/documents.webp","/Users/Public/Music":"./System/Icons/music.webp","/Users/Public/Pictures":"./System/Icons/pictures.webp","/Users/Public/Videos":"./System/Icons/videos.webp"}'
+                '{"/Users/Public/Desktop":"./System/Icons/32x32/desktop.webp","/Users/Public":"./System/Icons/32x32/user.webp","/Users/Public/Documents":"./System/Icons/32x32/documents.webp","/Users/Public/Music":"./System/Icons/32x32/music.webp","/Users/Public/Pictures":"./System/Icons/32x32/pictures.webp","/Users/Public/Videos":"./System/Icons/32x32/videos.webp"}'
             );
         },
     },
