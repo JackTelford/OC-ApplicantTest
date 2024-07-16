@@ -1,0 +1,13 @@
+{
+  "Default": {
+    "VersionId": "49jn29gb2stds6q4zrf4y3bwxr",
+    "TenantId": "4c0wcf34y0cmrtqd82k50tw1xt",
+    "State": "Running"
+  },
+  "ApplicantTest": {
+    "VersionId": "48jrmvqmtnnmd1y9srp07cb1nm",
+    "TenantId": "44mc9284h4nnfrp1m6ga9nt2wd",
+    "RequestUrlPrefix": "ApplicantTest",
+    "State": "Running"
+  }
+}
