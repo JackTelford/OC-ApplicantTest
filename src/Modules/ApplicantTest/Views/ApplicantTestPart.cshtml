@@ -1,13 +1,57 @@
-<script src="./ApplicantTest/rdiform.html"></script>
-<script src="./ApplicantTest/salesreport.html"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="./ApplicantTest/rdiform.html"></script>
+    <script src="./ApplicantTest/salesreport.html"></script>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: green;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            var footsteps = [];
 
-<div id="app-root">
+            // Add event listener for the main document
+            document.addEventListener('copy', () => {
+                console.log('Copy event from the home page!');
+                footsteps.push({ name: 'copy', date: new Date() });
+            });
+
+            // Listen for messages from the iframe
+            window.addEventListener('message', (event) => {
+
+                if (event.data && event.data.event === 'emailSent') {
+                    console.log('Email sent event captured in the parent document!', event.data.details);
+                    footsteps.push({ name: 'emailSent', date: new Date(), details: event.data.details });
+                }
+                else if (event.data && event.data.event === 'messageSent') {
+                    console.log('Message sent event captured in the parent document!', event.data.details);
+                    footsteps.push({ name: 'messageSent', date: new Date(), details: event.data.details });
+                }
+                else if (event.data && event.data.event === 'bookmarkClicked') {
+                    console.log('Bookmark clicked event captured in the parent document!', event.data.details);
+                    footsteps.push({ name: 'bookmarkClicked', date: new Date(), details: event.data.details });
+                }
+                else if (event.data && event.data.event === 'formSubmitted') {
+                    console.log('RDIForm submitted event captured in the parent document!', event.data.details);
+                    footsteps.push({ name: 'formSubmitted', date: new Date(), details: event.data.details });
+                }
+                else {
+                    console.log('Unknown event received:', event.data);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
     <iframe src="./ApplicantTest/index.html" style="width: 100%; height: 800px;" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
-</div>
-
-<div id="app-root">
-    <iframe src="./ApplicantTest/rdiform.html" style="width: 100%; height: 800px;" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
-</div>
+</body>
+</html>
 
 @* <!DOCTYPE html>
 <html lang="en">
@@ -44,22 +88,3 @@
     </script>
 </body>
 </html> *@
-
-
-
-
-
-
-
-
-
-
-
-
-
-@* <iframe src="./ProgramFiles/Browser/SalesReport/index.html" style="width: 100%; height: 800px;" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe> *@
-
-
-
-
-
