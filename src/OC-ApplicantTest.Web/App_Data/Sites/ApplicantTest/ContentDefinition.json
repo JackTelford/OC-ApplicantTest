@@ -604,6 +604,15 @@
               "Position": "0"
             }
           }
+        },
+        {
+          "PartName": "ApplicantTestPart",
+          "Name": "ApplicantTestPart",
+          "Settings": {
+            "ContentTypePartSettings": {
+              "Position": "5"
+            }
+          }
         }
       ]
     }
@@ -935,7 +944,18 @@
           }
         }
       ]
+    },
+    {
+      "Name": "ApplicantTestPart",
+      "Settings": {
+        "ContentPartSettings": {
+          "Attachable": true,
+          "DisplayName": "ApplicantTest App",
+          "Description": "Part to Attach to display the Applicant testing App."
+        }
+      },
+      "ContentPartFieldDefinitionRecords": []
     }
   ],
-  "Identifier": "4fgbmhd8yhxv71zvs94mk0v2nn"
+  "Identifier": "4r5ch754te91xr9qwhdm48n15h"
 }

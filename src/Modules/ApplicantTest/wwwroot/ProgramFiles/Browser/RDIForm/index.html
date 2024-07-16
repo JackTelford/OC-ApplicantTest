@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RDI-APPLICANT-TEST</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex; /* Center the form */
+            justify-content: center; /* Center the form horizontally */
+            align-items: center; /* Center the form vertically */
+            height: 100vh; /* Make the body take full height of the viewport */
+            margin: 0; /* Remove default margin */
+            padding: 50px; /* Original padding */
+        }
+
+        form {
+            background-color: #333; /* Dark grey background */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            color: #fff; /* White text for contrast */
+        }
+
+        input[type="text"] {
+            width: 100%;
+            height: 1.5rem;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #555; /* Slightly lighter grey for input background */
+            color: #fff; /* White text for contrast */
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%; /* Make submit button full width */
+            font-size: 16px; /* Increase font size for better readability */
+        }
+
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+
+        input[type="text"]:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="myForm">
+        <label for="date">Please Enter the Year of the first modern olympics (YYYY):</label><br>
+        <input type="text" id="date" name="date" placeholder="YYYY" maxlength="4"><br>
+        <input type="submit" value="Submit">
+        <div id="error-message" class="error"></div>
+    </form>
+
+    <script>
+  document.getElementById('myForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const yearInput = document.getElementById('date').value;
+    const errorMessage = document.getElementById('error-message');
+    if (yearInput === '1896') {
+      errorMessage.textContent = 'Form submitted successfully! Move to the next step.';
+      // Send message to parent window
+      if (window.parent) {
+        window.parent.postMessage({
+          event: 'formSubmitted',
+          details: {
+            yearInput
+          }
+        }, '*');
+      }
+      document.getElementById('myForm').reset();
+    } else {
+
+      errorMessage.textContent = 'Wrong year, try again';
+    }
+  });
+    </script>
+</body>
+</html>

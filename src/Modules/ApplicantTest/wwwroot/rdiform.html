@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 50px;
+        }
+
+        form {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            color: #fff;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            height: 1.5rem;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #555;
+            color: #fff;
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+
+        input[type="text"]:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .message {
+            margin-top: 10px;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="myForm">
+        <label for="date">Please Enter the Year of the first modern olympics (YYYY):</label><br>
+        <input type="text" id="date" name="date" placeholder="YYYY" maxlength="4"><br>
+        <input type="submit" value="Submit" id="correct">
+        <div id="message" class="message"></div>
+    </form>
+
+    <script>document.getElementById('myForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const yearInput = document.getElementById('date').value;
+            const message = document.getElementById('message');
+            if (yearInput === '1896') {
+                message.textContent = 'Form submitted successfully! Move to the next step.';
+                message.className = 'message success';
+                if (window.parent) {
+                    window.parent.postMessage({
+                        event: 'formSubmitted',
+                        details: {
+                            yearInput
+                        }
+                    }, '*');
+                }
+                document.getElementById('myForm').reset();
+            } else {
+                message.textContent = 'Wrong year, try again';
+                message.className = 'message error';
+            }
+        });</script>
+</body>
+</html>

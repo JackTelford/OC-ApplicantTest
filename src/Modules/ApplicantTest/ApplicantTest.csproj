@@ -3,9 +3,17 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\.index\desktopIcons.json" />
+    <Content Include="wwwroot\.index\fs.9p.json" />
+    <Content Include="wwwroot\.index\iniIcons.json" />
+    <Content Include="wwwroot\.index\search.lunr.json" />
+    <Content Include="wwwroot\.index\shortcutCache.json" />
+    <Content Include="wwwroot\.index\startMenuIcons.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -16,6 +24,10 @@
     <PackageReference Include="OrchardCore.ContentManagement" Version="1.8.3" />
     <PackageReference Include="OrchardCore.ContentTypes.Abstractions" Version="1.8.3" />
     <PackageReference Include="OrchardCore.DisplayManagement" Version="1.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>
