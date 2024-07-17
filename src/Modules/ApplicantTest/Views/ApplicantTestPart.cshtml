@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="./ApplicantTest/rdiform.html"></script>
-    <script src="./ApplicantTest/salesreport.html"></script>
+  @*   <script src="./ApplicantTest/rdiform.html"></script>
+    <script src="./ApplicantTest/salesreport.html"></script> *@
     <style>
         html, body {
             height: 100%;
             width: 100%;
-            background-color: green;
+            /*             background-color: green; */
             padding: 0;
             margin: 0;
         }
@@ -53,38 +53,128 @@
 </body>
 </html>
 
-@* <!DOCTYPE html>
+@* @{
+    ViewData["Title"] = "React Application";
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        #my-react-app {
-            /* Example styles */
-            padding: 20px;
-            background-color: #f0f0f0;
-        }
-    </style>
+    <title>@ViewData["Title"]</title>
 </head>
 <body>
     <div id="my-react-app"></div>
-    <script src="/ApplicantTest/index.js"></script>
+
+    <!-- Load React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+    <!-- Load your React app bundle -->
+    <script src="/ApplicantTest/ApplicantTest/_next/static/chunks/pages/_app-bfaee6120c21398e.js" onload="console.log('Loaded _app.js')" onerror="console.error('Error loading _app.js');"></script>
+    <script src="/ApplicantTest/ApplicantTest/_next/static/chunks/pages/_error-a40d28c628e70b05.js" onload="console.log('Loaded _error.js')" onerror="console.error('Error loading _error.js');"></script>
+    <script src="/ApplicantTest/ApplicantTest/_next/static/chunks/pages/index-13ddc0e1d5ecbe55.js" onload="console.log('Loaded index.js')" onerror="console.error('Error loading index.js');"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const reactAppRoot = document.getElementById('my-react-app');
+            console.log('DOMContentLoaded event fired');
             if (reactAppRoot) {
-                console.log('React app root found:', reactAppRoot);
-                ReactDOM.render(React.createElement(App), reactAppRoot);
-                console.log('React app initialized.');
+                console.log('Found my-react-app div');
+                const root = ReactDOM.createRoot(reactAppRoot);
+                console.log('ReactDOM root created');
+                try {
+                    root.render(React.createElement(window._app)); // Ensure App is defined or imported
+                    console.log('App rendered');
+                } catch (error) {
+                    console.error('Error rendering App:', error);
+                }
             } else {
-                console.error('React app root not found.');
+                console.error('my-react-app div not found');
             }
         });
     </script>
+</body>
+</html>
+ *@
+
+@* <!DOCTYPE html>
+<html>
+<head>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            background-color: green;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            var footsteps = [];
+
+            // Add event listener for the main document
+            document.addEventListener('copy', () => {
+                console.log('Copy event from the home page!');
+                footsteps.push({ name: 'copy', date: new Date() });
+            });
+
+            // Listen for messages from the iframe
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.event === 'emailSent') {
+                    console.log('Email sent event captured in the parent document!', event.data.details);
+                    footsteps.push({ name: 'emailSent', date: new Date(), details: event.data.details });
+                }
+                else if (event.data && event.data.event === 'messageSent') {
+                    console.log('Message sent event captured in the parent document!', event.data.details);
+                    footsteps.push({ name: 'messageSent', date: new Date(), details: event.data.details });
+                }
+                else if (event.data && event.data.event === 'bookmarkClicked') {
+                    console.log('Bookmark clicked event captured in the parent document!', event.data.details);
+                    footsteps.push({ name: 'bookmarkClicked', date: new Date(), details: event.data.details });
+                }
+                else if (event.data && event.data.event === 'formSubmitted') {
+                    console.log('RDIForm submitted event captured in the parent document!', event.data.details);
+                    footsteps.push({ name: 'formSubmitted', date: new Date(), details: event.data.details });
+                }
+                else {
+                    console.log('Unknown event received:', event.data);
+                }
+            });
+
+            // Function to load HTML content
+            function loadContent(url, containerId) {
+                console.log('Attempting to load content from URL:', url);
+                fetch(url)
+                    .then(response => {
+                        console.log('Fetch response status:', response.status);
+                        return response.text();
+                    })
+                    .then(data => {
+                        console.log('Successfully loaded content:', data);
+                        // Create a new DOM parser
+                        const parser = new DOMParser();
+                        // Parse the text into a document
+                        const doc = parser.parseFromString(data, 'text/html');
+                        // Get the content within the body tag
+                        const bodyContent = doc.body.innerHTML;
+                        // Insert the body content into the container
+                        document.getElementById(containerId).innerHTML = bodyContent;
+                        console.log('Content loaded into container:', containerId);
+                    })
+                    .catch(error => {
+                        console.error('Error loading content:', error);
+                    });
+            }
+
+            // Load the content from HTML files
+            loadContent('./ApplicantTest/index.html', 'content');
+        });
+    </script>
+</head>
+<body>
+    <div id="content" style="width: 100%; height: 800px;"></div>
 </body>
 </html> *@
