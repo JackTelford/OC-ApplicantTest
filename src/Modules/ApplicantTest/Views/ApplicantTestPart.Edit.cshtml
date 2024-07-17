@@ -1,0 +1,68 @@
+@using ApplicantTest.Models
+@model ApplicantTestPart
+
+<h1>Edit Applicant Test Part</h1>
+
+<form>
+    <fieldset>
+        <legend>Applicant Test Part</legend>
+        <div class="form-group">
+            <label asp-for="ApplicantTest">Applicant Test</label>
+            <input asp-for="ApplicantTest" class="form-control" />
+            <span asp-validation-for="ApplicantTest" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserName">User Name</label>
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="TestTakenAt">Test Taken At</label>
+            <input asp-for="TestTakenAt" class="form-control" type="datetime-local" />
+            <span asp-validation-for="TestTakenAt" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EmailSent">Email Sent</label>
+            <input asp-for="EmailSent" class="form-control" />
+            <span asp-validation-for="EmailSent" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="BookmarkClicked">Bookmark Clicked</label>
+            <input asp-for="BookmarkClicked" class="form-control" />
+            <span asp-validation-for="BookmarkClicked" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="FormSubmitted">Form Submitted</label>
+            <input asp-for="FormSubmitted" class="form-control" />
+            <span asp-validation-for="FormSubmitted" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MessageSentToAsakoSatoshi">Message Sent To Asako Satoshi</label>
+            <input asp-for="MessageSentToAsakoSatoshi" class="form-control" />
+            <span asp-validation-for="MessageSentToAsakoSatoshi" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MessageSentToLilyWang">Message Sent To Lily Wang</label>
+            <input asp-for="MessageSentToLilyWang" class="form-control" />
+            <span asp-validation-for="MessageSentToLilyWang" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MessageSentToMadisonByers">Message Sent To Madison Byers</label>
+            <input asp-for="MessageSentToMadisonByers" class="form-control" />
+            <span asp-validation-for="MessageSentToMadisonByers" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MessageSentToDominicGonzalez">Message Sent To Dominic Gonzalez</label>
+            <input asp-for="MessageSentToDominicGonzalez" class="form-control" />
+            <span asp-validation-for="MessageSentToDominicGonzalez" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MessageSentToSimoneKhan">Message Sent To Simone Khan</label>
+            <input asp-for="MessageSentToSimoneKhan" class="form-control" />
+            <span asp-validation-for="MessageSentToSimoneKhan" class="text-danger"></span>
+        </div>
+    </fieldset>
+</form>
+
+
+@*  path views/ApplicantTestPart_Edit.cshtml *@

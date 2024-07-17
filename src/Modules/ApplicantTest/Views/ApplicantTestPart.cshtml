@@ -1,8 +1,215 @@
 <!DOCTYPE html>
 <html>
 <head>
-  @*   <script src="./ApplicantTest/rdiform.html"></script>
-    <script src="./ApplicantTest/salesreport.html"></script> *@
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .scoreboard {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+            .scoreboard div {
+                margin: 5px 0;
+            }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const emailSentField = document.getElementById('EmailSent');
+            const messageSentToAsakoSatoshiField = document.getElementById('MessageSentToAsakoSatoshi');
+            const messageSentToLilyWangField = document.getElementById('MessageSentToLilyWang');
+            const messageSentToMadisonByersField = document.getElementById('MessageSentToMadisonByers');
+            const messageSentToDominicGonzalezField = document.getElementById('MessageSentToDominicGonzalez');
+            const messageSentToSimoneKhanField = document.getElementById('MessageSentToSimoneKhan');
+            const bookmarkClickedField = document.getElementById('BookmarkClicked');
+            const formSubmittedField = document.getElementById('FormSubmitted');
+
+            function updateFootsteps(field) {
+                field.value = parseInt(field.value) + 1;
+                console.log(`Updating field: ${field.name} to value: ${field.value}`);
+                updateServer(field.name, field.value);
+                updateScoreboard();
+            }
+
+            function updateServer(fieldName, value) {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/update-endpoint", true);
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log("Server updated successfully.");
+                    }
+                };
+                xhr.send(JSON.stringify({ fieldName: fieldName, value: value }));
+            }
+
+            function updateScoreboard() {
+                document.getElementById('emailSentScore').innerText = emailSentField.value;
+                document.getElementById('messageSentToAsakoSatoshiScore').innerText = messageSentToAsakoSatoshiField.value;
+                document.getElementById('messageSentToLilyWangScore').innerText = messageSentToLilyWangField.value;
+                document.getElementById('messageSentToMadisonByersScore').innerText = messageSentToMadisonByersField.value;
+                document.getElementById('messageSentToDominicGonzalezScore').innerText = messageSentToDominicGonzalezField.value;
+                document.getElementById('messageSentToSimoneKhanScore').innerText = messageSentToSimoneKhanField.value;
+                document.getElementById('bookmarkClickedScore').innerText = bookmarkClickedField.value;
+                document.getElementById('formSubmittedScore').innerText = formSubmittedField.value;
+            }
+
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.event === 'emailSent') {
+                    console.log('Email sent event captured in the parent document!', event.data.details);
+                    updateFootsteps(emailSentField);
+                } else if (event.data && event.data.event === 'messageSent') {
+                    console.log('Message sent event captured in the parent document!', event.data.details);
+                    updateFootsteps(messageSentToAsakoSatoshiField);
+                } else if (event.data && event.data.event === 'bookmarkClicked') {
+                    console.log('Bookmark clicked event captured in the parent document!', event.data.details);
+                    updateFootsteps(bookmarkClickedField);
+                } else if (event.data && event.data.event === 'formSubmitted') {
+                    console.log('Form submitted event captured in the parent document!', event.data.details);
+                    updateFootsteps(formSubmittedField);
+                } else {
+                    console.log('Unknown event received:', event.data);
+                }
+            });
+
+            // Initialize scoreboard with initial values
+            updateScoreboard();
+        });
+    </script>
+</head>
+<body>
+    <iframe src="./ApplicantTest/index.html" style="width: 100%; height: 800px;" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
+    <form id="eventForm" method="post" action="/update-endpoint">
+        <input type="hidden" id="EmailSent" name="EmailSent" value="0" />
+        <input type="hidden" id="MessageSentToAsakoSatoshi" name="MessageSentToAsakoSatoshi" value="0" />
+        <input type="hidden" id="MessageSentToLilyWang" name="MessageSentToLilyWang" value="0" />
+        <input type="hidden" id="MessageSentToMadisonByers" name="MessageSentToMadisonByers" value="0" />
+        <input type="hidden" id="MessageSentToDominicGonzalez" name="MessageSentToDominicGonzalez" value="0" />
+        <input type="hidden" id="MessageSentToSimoneKhan" name="MessageSentToSimoneKhan" value="0" />
+        <input type="hidden" id="BookmarkClicked" name="BookmarkClicked" value="0" />
+        <input type="hidden" id="FormSubmitted" name="FormSubmitted" value="0" />
+    </form>
+    <div class="scoreboard">
+        <h3>Scoreboard</h3>
+        <div>Email Sent: <span id="emailSentScore">0</span></div>
+        <div>Message Sent to Asako Satoshi: <span id="messageSentToAsakoSatoshiScore">0</span></div>
+        <div>Message Sent to Lily Wang: <span id="messageSentToLilyWangScore">0</span></div>
+        <div>Message Sent to Madison Byers: <span id="messageSentToMadisonByersScore">0</span></div>
+        <div>Message Sent to Dominic Gonzalez: <span id="messageSentToDominicGonzalezScore">0</span></div>
+        <div>Message Sent to Simone Khan: <span id="messageSentToSimoneKhanScore">0</span></div>
+        <div>Bookmark Clicked: <span id="bookmarkClickedScore">0</span></div>
+        <div>Form Submitted: <span id="formSubmittedScore">0</span></div>
+    </div>
+</body>
+</html>
+
+
+
+
+@* <!DOCTYPE html>
+<html>
+<head>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .scoreboard {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+            .scoreboard div {
+                margin: 5px 0;
+            }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('eventForm');
+            const emailSentField = document.getElementById('EmailSent');
+            const messageSentField = document.getElementById('MessageSent');
+            const bookmarkClickedField = document.getElementById('BookmarkClicked');
+            const formSubmittedField = document.getElementById('FormSubmitted');
+
+            function updateFootsteps(field) {
+                field.value = parseInt(field.value) + 1;
+                form.submit();
+                updateScoreboard();
+            }
+
+            function updateScoreboard() {
+                document.getElementById('emailSentScore').innerText = emailSentField.value;
+                document.getElementById('messageSentScore').innerText = messageSentField.value;
+                document.getElementById('bookmarkClickedScore').innerText = bookmarkClickedField.value;
+                document.getElementById('formSubmittedScore').innerText = formSubmittedField.value;
+            }
+
+            document.addEventListener('copy', () => {
+                console.log('Copy event from the home page!');
+                updateFootsteps(copyField);
+            });
+
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.event === 'emailSent') {
+                    console.log('Email sent event captured in the parent document!', event.data.details);
+                    updateFootsteps(emailSentField);
+                } else if (event.data && event.data.event === 'messageSent') {
+                    console.log('Message sent event captured in the parent document!', event.data.details);
+                    updateFootsteps(messageSentField);
+                } else if (event.data && event.data.event === 'bookmarkClicked') {
+                    console.log('Bookmark clicked event captured in the parent document!', event.data.details);
+                    updateFootsteps(bookmarkClickedField);
+                } else if (event.data && event.data.event === 'formSubmitted') {
+                    console.log('Form submitted event captured in the parent document!', event.data.details);
+                    updateFootsteps(formSubmittedField);
+                } else {
+                    console.log('Unknown event received:', event.data);
+                }
+            });
+
+            // scoreboard
+            updateScoreboard();
+        });
+    </script>
+</head>
+<body>
+    <iframe src="./ApplicantTest/index.html" style="width: 100%; height: 800px;" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
+    <form id="eventForm" method="post" action="">
+        <input type="hidden" id="EmailSent" name="EmailSent" value="0" />
+        <input type="hidden" id="MessageSent" name="MessageSent" value="0" />
+        <input type="hidden" id="BookmarkClicked" name="BookmarkClicked" value="0" />
+        <input type="hidden" id="FormSubmitted" name="FormSubmitted" value="0" />
+    </form>
+    <div class="scoreboard">
+        <h3>Scoreboard</h3>
+        <div>Email Sent: <span id="emailSentScore">0</span></div>
+        <div>Message Sent: <span id="messageSentScore">0</span></div>
+        <div>Bookmark Clicked: <span id="bookmarkClickedScore">0</span></div>
+        <div>Form Submitted: <span id="formSubmittedScore">0</span></div>
+    </div>
+</body>
+</html> *@
+
+
+@* <!DOCTYPE html>
+<html>
+<head>
     <style>
         html, body {
             height: 100%;
@@ -52,6 +259,26 @@
     <iframe src="./ApplicantTest/index.html" style="width: 100%; height: 800px;" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
 </body>
 </html>
+ *@
+
+
+
+
+
+@*   <script src="./ApplicantTest/rdiform.html"></script>
+    <script src="./ApplicantTest/salesreport.html"></script> *@
+
+
+
+
+
+
+
+
+
+
+
+
 
 @* @{
     ViewData["Title"] = "React Application";
