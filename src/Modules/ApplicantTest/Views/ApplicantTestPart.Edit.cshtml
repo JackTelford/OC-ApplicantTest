@@ -21,7 +21,7 @@
             border-top: 1px solid #ddd;
             font-size: 12px;
             display: flex;
-            justify-content: flex-start; /* Align items to the start (left) */
+            justify-content: flex-start;
             align-items: center;
         }
 
@@ -31,7 +31,7 @@
 
         .iframe-container {
             width: 100%;
-            height: 44rem; /* Adjust height to leave space for the scoreboard */
+            height: 44rem;
             border: 2px solid black;
         }
 
@@ -52,7 +52,6 @@
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const contentItemId = "@Model.ContentItem?.ContentItemId"; // dynamically from the model, check for null
             const emailSentField = document.getElementById('EmailSent');
             const messageSentToAsakoSatoshiField = document.getElementById('MessageSentToAsakoSatoshi');
             const messageSentToLilyWangField = document.getElementById('MessageSentToLilyWang');
@@ -62,27 +61,16 @@
             const bookmarkClickedField = document.getElementById('BookmarkClicked');
             const formSubmittedField = document.getElementById('FormSubmitted');
             const usernameField = document.getElementById('UserName');
+            const form = document.getElementById('eventForm');
 
-            function updateFootsteps(field) {
+            async function updateFootsteps(field) {
                 field.value = parseInt(field.value) + 1;
                 console.log(`Updating field: ${field.name} to value: ${field.value}`);
-                updateServer(field.name, field.value);
-                updateScoreboard();
-            }
-
-            function updateServer(fieldName, value) {
-                const xhr = new XMLHttpRequest();
-                xhr.open("POST", "/UserUpdated", true);
-                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        console.log("Server updated successfully.");
-                    }
-                };
-                xhr.send(JSON.stringify({ contentItemId: contentItemId, fieldName: fieldName, value: value }));
+                form.submit();
             }
 
             function updateScoreboard() {
+                console.log('Updating scoreboard');
                 document.getElementById('emailSentScore').innerText = emailSentField.value;
                 document.getElementById('messageSentToAsakoSatoshiScore').innerText = messageSentToAsakoSatoshiField.value;
                 document.getElementById('messageSentToLilyWangScore').innerText = messageSentToLilyWangField.value;
@@ -94,6 +82,7 @@
             }
 
             window.addEventListener('message', (event) => {
+                console.log('Received message:', event);
                 if (event.data && event.data.event === 'emailSent') {
                     console.log('Email sent event captured in the parent document!', event.data.details);
                     updateFootsteps(emailSentField);
@@ -126,7 +115,7 @@
     <div class="iframe-container">
         <iframe src="/ApplicantTest/ApplicantTest/index.html" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
     </div>
-    <form id="eventForm" method="post" action="/update-endpoint">
+    <form id="eventForm" method="post">
         <input type="hidden" id="EmailSent" name="EmailSent" value="0" />
         <input type="hidden" id="MessageSentToAsakoSatoshi" name="MessageSentToAsakoSatoshi" value="0" />
         <input type="hidden" id="MessageSentToLilyWang" name="MessageSentToLilyWang" value="0" />

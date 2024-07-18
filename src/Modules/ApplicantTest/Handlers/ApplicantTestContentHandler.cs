@@ -1,8 +1,6 @@
 using ApplicantTest.Models;
 using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Handlers;
-using System;
-using System.Threading.Tasks;
 
 namespace ApplicantTest.Handlers;
 
@@ -20,28 +18,24 @@ public class ApplicantTestContentHandler : ContentHandlerBase
         if (context.ContentItem.ContentType == "ApplicantTest")
         {
             var part = context.ContentItem.As<ApplicantTestPart>();
-            if (part != null)
+            if (part != null && part.formSubmitted == 1)
             {
-                // handle the finish test event
-                if (part.formSubmitted == 1) // FormSubmitted indicates the test is finished
+                var contentItem = await _contentManager.Value.NewAsync("ApplicantTest");
+                contentItem.Alter<ApplicantTestPart>(p =>
                 {
-                    var contentItem = await _contentManager.Value.NewAsync("ApplicantTest");
-                    contentItem.Alter<ApplicantTestPart>(p =>
-                    {
-                        p.UserName = part.UserName;
-                        p.Email = part.Email;
-                        p.BookMarkClicked = part.BookMarkClicked;
-                        p.formSubmitted = part.formSubmitted;
-                        p.MessageSentToAsakoSatoshi = part.MessageSentToAsakoSatoshi;
-                        p.MessageSentToLilyWang = part.MessageSentToLilyWang;
-                        p.MessageSentToMadisonByers = part.MessageSentToMadisonByers;
-                        p.MessageSentToDominicGonzalez = part.MessageSentToDominicGonzalez;
-                        p.MessageSentToSimoneKhan = part.MessageSentToSimoneKhan;
-                        p.TestTakenAt = DateTime.UtcNow;
-                    });
+                    p.UserName = part.UserName;
+                    p.Email = part.Email;
+                    p.BookMarkClicked = part.BookMarkClicked;
+                    p.formSubmitted = part.formSubmitted;
+                    p.MessageSentToAsakoSatoshi = part.MessageSentToAsakoSatoshi;
+                    p.MessageSentToLilyWang = part.MessageSentToLilyWang;
+                    p.MessageSentToMadisonByers = part.MessageSentToMadisonByers;
+                    p.MessageSentToDominicGonzalez = part.MessageSentToDominicGonzalez;
+                    p.MessageSentToSimoneKhan = part.MessageSentToSimoneKhan;
+                    p.TestTakenAt = DateTime.UtcNow;
+                });
 
-                    await _contentManager.Value.CreateAsync(contentItem, VersionOptions.Published);
-                }
+                await _contentManager.Value.CreateAsync(contentItem, VersionOptions.Published);
             }
         }
     }

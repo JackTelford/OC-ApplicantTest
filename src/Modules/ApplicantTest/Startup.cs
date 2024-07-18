@@ -23,24 +23,14 @@ public class Startup : OrchardCore.Modules.StartupBase
                     .UseDisplayDriver<ApplicantTestDisplayDriver>();
 
         services.AddScoped<IDataMigration, ApplicantTestMigrations>();
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddScoped<Lazy<IContentManager>>(sp => new Lazy<IContentManager>(() => sp.GetRequiredService<IContentManager>()));
         services.AddScoped<IContentHandler, ApplicantTestContentHandler>();
-        services.AddControllersWithViews();
+        services.AddScoped<ApplicantTestContentHandler>();
     }
 
     public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         app.UseCustomStaticFiles(env);
-
-        /*app.UseApplicantTestMiddleware();*/
-
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=ApplicantTest}/{action=Index}/{id?}");
-            endpoints.MapControllers();
-        });
     }
 }
+
