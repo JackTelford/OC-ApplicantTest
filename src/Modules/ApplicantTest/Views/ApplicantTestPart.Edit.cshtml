@@ -1,68 +1,153 @@
 @using ApplicantTest.Models
 @model ApplicantTestPart
 
-<h1>Edit Applicant Test Part</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
 
-<form>
-    <fieldset>
-        <legend>Applicant Test Part</legend>
-        <div class="form-group">
-            <label asp-for="ApplicantTest">Applicant Test</label>
-            <input asp-for="ApplicantTest" class="form-control" />
-            <span asp-validation-for="ApplicantTest" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="UserName">User Name</label>
-            <input asp-for="UserName" class="form-control" />
-            <span asp-validation-for="UserName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="TestTakenAt">Test Taken At</label>
-            <input asp-for="TestTakenAt" class="form-control" type="datetime-local" />
-            <span asp-validation-for="TestTakenAt" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="EmailSent">Email Sent</label>
-            <input asp-for="EmailSent" class="form-control" />
-            <span asp-validation-for="EmailSent" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="BookmarkClicked">Bookmark Clicked</label>
-            <input asp-for="BookmarkClicked" class="form-control" />
-            <span asp-validation-for="BookmarkClicked" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="FormSubmitted">Form Submitted</label>
-            <input asp-for="FormSubmitted" class="form-control" />
-            <span asp-validation-for="FormSubmitted" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="MessageSentToAsakoSatoshi">Message Sent To Asako Satoshi</label>
-            <input asp-for="MessageSentToAsakoSatoshi" class="form-control" />
-            <span asp-validation-for="MessageSentToAsakoSatoshi" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="MessageSentToLilyWang">Message Sent To Lily Wang</label>
-            <input asp-for="MessageSentToLilyWang" class="form-control" />
-            <span asp-validation-for="MessageSentToLilyWang" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="MessageSentToMadisonByers">Message Sent To Madison Byers</label>
-            <input asp-for="MessageSentToMadisonByers" class="form-control" />
-            <span asp-validation-for="MessageSentToMadisonByers" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="MessageSentToDominicGonzalez">Message Sent To Dominic Gonzalez</label>
-            <input asp-for="MessageSentToDominicGonzalez" class="form-control" />
-            <span asp-validation-for="MessageSentToDominicGonzalez" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="MessageSentToSimoneKhan">Message Sent To Simone Khan</label>
-            <input asp-for="MessageSentToSimoneKhan" class="form-control" />
-            <span asp-validation-for="MessageSentToSimoneKhan" class="text-danger"></span>
-        </div>
-    </fieldset>
-</form>
+        .scoreboard {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f8f8;
+            padding: 5px 10px;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            display: flex;
+            justify-content: flex-start; /* Align items to the start (left) */
+            align-items: center;
+        }
 
+            .scoreboard div {
+                margin: 0 10px;
+            }
 
-@*  path views/ApplicantTestPart_Edit.cshtml *@
+        .iframe-container {
+            width: 100%;
+            height: 44rem; /* Adjust height to leave space for the scoreboard */
+            border: 2px solid black;
+        }
+
+            .iframe-container iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+
+        #startTest {
+            margin: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentItemId = "@Model.ContentItem?.ContentItemId"; // dynamically from the model, check for null
+            const emailSentField = document.getElementById('EmailSent');
+            const messageSentToAsakoSatoshiField = document.getElementById('MessageSentToAsakoSatoshi');
+            const messageSentToLilyWangField = document.getElementById('MessageSentToLilyWang');
+            const messageSentToMadisonByersField = document.getElementById('MessageSentToMadisonByers');
+            const messageSentToDominicGonzalezField = document.getElementById('MessageSentToDominicGonzalez');
+            const messageSentToSimoneKhanField = document.getElementById('MessageSentToSimoneKhan');
+            const bookmarkClickedField = document.getElementById('BookmarkClicked');
+            const formSubmittedField = document.getElementById('FormSubmitted');
+            const usernameField = document.getElementById('UserName');
+
+            function updateFootsteps(field) {
+                field.value = parseInt(field.value) + 1;
+                console.log(`Updating field: ${field.name} to value: ${field.value}`);
+                updateServer(field.name, field.value);
+                updateScoreboard();
+            }
+
+            function updateServer(fieldName, value) {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/UserUpdated", true);
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log("Server updated successfully.");
+                    }
+                };
+                xhr.send(JSON.stringify({ contentItemId: contentItemId, fieldName: fieldName, value: value }));
+            }
+
+            function updateScoreboard() {
+                document.getElementById('emailSentScore').innerText = emailSentField.value;
+                document.getElementById('messageSentToAsakoSatoshiScore').innerText = messageSentToAsakoSatoshiField.value;
+                document.getElementById('messageSentToLilyWangScore').innerText = messageSentToLilyWangField.value;
+                document.getElementById('messageSentToMadisonByersScore').innerText = messageSentToMadisonByersField.value;
+                document.getElementById('messageSentToDominicGonzalezScore').innerText = messageSentToDominicGonzalezField.value;
+                document.getElementById('messageSentToSimoneKhanScore').innerText = messageSentToSimoneKhanField.value;
+                document.getElementById('bookmarkClickedScore').innerText = bookmarkClickedField.value;
+                document.getElementById('formSubmittedScore').innerText = formSubmittedField.value;
+            }
+
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.event === 'emailSent') {
+                    console.log('Email sent event captured in the parent document!', event.data.details);
+                    updateFootsteps(emailSentField);
+                } else if (event.data && event.data.event === 'messageSent') {
+                    console.log('Message sent event captured in the parent document!', event.data.details);
+                    updateFootsteps(messageSentToAsakoSatoshiField);
+                } else if (event.data && event.data.event === 'bookmarkClicked') {
+                    console.log('Bookmark clicked event captured in the parent document!', event.data.details);
+                    updateFootsteps(bookmarkClickedField);
+                } else if (event.data && event.data.event === 'formSubmitted') {
+                    console.log('Form submitted event captured in the parent document!', event.data.details);
+                    updateFootsteps(formSubmittedField);
+                } else {
+                    console.log('Unknown event received:', event.data);
+                }
+            });
+
+            updateScoreboard();
+            document.getElementById('startTest').addEventListener('click', () => {
+                console.log('Test started for user:', usernameField.value);
+            });
+
+            document.getElementById('finishTest').addEventListener('click', () => {
+                console.log('Test finished for user:', usernameField.value);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="iframe-container">
+        <iframe src="/ApplicantTest/ApplicantTest/index.html" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
+    </div>
+    <form id="eventForm" method="post" action="/update-endpoint">
+        <input type="hidden" id="EmailSent" name="EmailSent" value="0" />
+        <input type="hidden" id="MessageSentToAsakoSatoshi" name="MessageSentToAsakoSatoshi" value="0" />
+        <input type="hidden" id="MessageSentToLilyWang" name="MessageSentToLilyWang" value="0" />
+        <input type="hidden" id="MessageSentToMadisonByers" name="MessageSentToMadisonByers" value="0" />
+        <input type="hidden" id="MessageSentToDominicGonzalez" name="MessageSentToDominicGonzalez" value="0" />
+        <input type="hidden" id="MessageSentToSimoneKhan" name="MessageSentToSimoneKhan" value="0" />
+        <input type="hidden" id="BookmarkClicked" name="BookmarkClicked" value="0" />
+        <input type="hidden" id="FormSubmitted" name="FormSubmitted" value="0" />
+        <input type="text" id="UserName" name="UserName" placeholder="Enter your username" required />
+        <button type="button" id="startTest">Start Test</button>
+        <button type="button" id="finishTest">Finish Test</button>
+    </form>
+    <div class="scoreboard">
+        <div>Email Sent: <span id="emailSentScore">0</span></div>
+        <div>Message Sent to Asako Satoshi: <span id="messageSentToAsakoSatoshiScore">0</span></div>
+        <div>Message Sent to Lily Wang: <span id="messageSentToLilyWangScore">0</span></div>
+        <div>Message Sent to Madison Byers: <span id="messageSentToMadisonByersScore">0</span></div>
+        <div>Message Sent to Dominic Gonzalez: <span id="messageSentToDominicGonzalezScore">0</span></div>
+        <div>Message Sent to Simone Khan: <span id="messageSentToSimoneKhanScore">0</span></div>
+        <div>Bookmark Clicked: <span id="bookmarkClickedScore">0</span></div>
+        <div>Form Submitted: <span id="formSubmittedScore">0</span></div>
+    </div>
+</body>
+</html>

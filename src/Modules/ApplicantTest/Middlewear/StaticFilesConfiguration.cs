@@ -61,6 +61,8 @@ public static class StaticFilesConfiguration
     }
 }
 
+// path /Middlewear/StaticFilesConfiguration.cs
+
 
 
 // File: ApplicantTest/Middlewear/StaticFilesConfiguration.cs

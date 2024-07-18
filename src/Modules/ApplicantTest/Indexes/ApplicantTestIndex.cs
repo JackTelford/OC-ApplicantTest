@@ -11,6 +11,8 @@ public class ApplicantTestIndex : MapIndex
 
     public DateTime TestTakenAt { get; set; }
 
+    public Timer Timer { get; set; }
+
     public int Email { get; set; }
 
     public int BookMarkClicked { get; set; }
@@ -45,6 +47,7 @@ public class ApplicantTestIndexProvider : IndexProvider<ContentItem>
                     ContentItemId = contentItem.ContentItemId,
                     Email = applicantTestPart.Email,
                     TestTakenAt = applicantTestPart.TestTakenAt,
+                    Timer = applicantTestPart.Timer,
                     UserName = applicantTestPart.UserName,
                     BookMarkClicked = applicantTestPart.BookMarkClicked,
                     formSubmitted = applicantTestPart.formSubmitted,

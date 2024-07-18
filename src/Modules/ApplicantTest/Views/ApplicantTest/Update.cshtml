@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Endpoint Test</title>
+</head>
+<body>
+    <form id="updateForm" method="post" action="/UserUpdated">
+        <input type="hidden" id="ContentItemId" name="ContentItemId" value="your-content-item-id" />
+        <input type="text" id="FieldName" name="FieldName" value="EmailSent" />
+        <input type="number" id="Value" name="Value" value="1" />
+        <button type="submit">Update</button>
+    </form>
+
+    <script>
+        document.getElementById('updateForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const data = {
+                ContentItemId: document.getElementById('ContentItemId').value,
+                FieldName: document.getElementById('FieldName').value,
+                Value: parseInt(document.getElementById('Value').value)
+            };
+
+            fetch('/UserUpdated', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>

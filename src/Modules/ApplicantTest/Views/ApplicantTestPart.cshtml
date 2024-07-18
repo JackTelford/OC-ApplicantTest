@@ -1,4 +1,25 @@
-<!DOCTYPE html>
+@using ApplicantTest.Models
+@model ApplicantTestPart
+
+<h1>Applicant Test Part</h1>
+
+<div>
+    <p><strong>User Name:</strong> @Model.UserName</p>
+    <p><strong>Test Taken At:</strong> @Model.TestTakenAt</p>
+    <p><strong>Email Sent:</strong> @Model.Email</p>
+    <p><strong>Bookmark Clicked:</strong> @Model.BookMarkClicked</p>
+    <p><strong>Form Submitted:</strong> @Model.formSubmitted</p>
+    <p><strong>Message Sent To Asako Satoshi:</strong> @Model.MessageSentToAsakoSatoshi</p>
+    <p><strong>Message Sent To Lily Wang:</strong> @Model.MessageSentToLilyWang</p>
+    <p><strong>Message Sent To Madison Byers:</strong> @Model.MessageSentToMadisonByers</p>
+    <p><strong>Message Sent To Dominic Gonzalez:</strong> @Model.MessageSentToDominicGonzalez</p>
+    <p><strong>Message Sent To Simone Khan:</strong> @Model.MessageSentToSimoneKhan</p>
+</div>
+
+
+
+
+@* <!DOCTYPE html>
 <html>
 <head>
     <style>
@@ -14,13 +35,38 @@
             bottom: 0;
             width: 100%;
             background-color: #f8f8f8;
-            padding: 10px;
+            padding: 5px 10px;
             border-top: 1px solid #ddd;
+            font-size: 12px;
+            display: flex;
+            justify-content: flex-start; /* Align items to the start (left) */
+            align-items: center;
         }
 
             .scoreboard div {
-                margin: 5px 0;
+                margin: 0 10px;
             }
+
+        .iframe-container {
+            width: 100%;
+            height: 44rem; /* Adjust height to leave space for the scoreboard */
+            border: 2px solid black;
+        }
+
+            .iframe-container iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+
+        #startTest {
+            margin: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -32,6 +78,7 @@
             const messageSentToSimoneKhanField = document.getElementById('MessageSentToSimoneKhan');
             const bookmarkClickedField = document.getElementById('BookmarkClicked');
             const formSubmittedField = document.getElementById('FormSubmitted');
+            const usernameField = document.getElementById('UserName');
 
             function updateFootsteps(field) {
                 field.value = parseInt(field.value) + 1;
@@ -40,6 +87,10 @@
                 updateScoreboard();
             }
 
+            // The updateServer function is to send the updated field values
+            //  to the server in real-time.
+            // want to keep the server-side data in sync with the client-side updates
+            //  without waiting for the form submission.
             function updateServer(fieldName, value) {
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", "/update-endpoint", true);
@@ -81,13 +132,23 @@
                 }
             });
 
-            // Initialize scoreboard with initial values
             updateScoreboard();
+            // start Test + UserName
+            document.getElementById('startTest').addEventListener('click', () => {
+                console.log('Test started for user:', usernameField.value);
+            });
+
+            document.getElementById('finishTest').addEventListener('click', () => {
+                console.log('Test finished for user:', usernameField.value);
+                // Capture all data
+            });
         });
     </script>
 </head>
 <body>
-    <iframe src="./ApplicantTest/index.html" style="width: 100%; height: 800px;" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
+    <div class="iframe-container">
+        <iframe src="./ApplicantTest/index.html" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
+    </div>
     <form id="eventForm" method="post" action="/update-endpoint">
         <input type="hidden" id="EmailSent" name="EmailSent" value="0" />
         <input type="hidden" id="MessageSentToAsakoSatoshi" name="MessageSentToAsakoSatoshi" value="0" />
@@ -97,9 +158,11 @@
         <input type="hidden" id="MessageSentToSimoneKhan" name="MessageSentToSimoneKhan" value="0" />
         <input type="hidden" id="BookmarkClicked" name="BookmarkClicked" value="0" />
         <input type="hidden" id="FormSubmitted" name="FormSubmitted" value="0" />
+        <input type="text" id="UserName" name="UserName" placeholder="Enter your username" required />
+        <button type="button" id="startTest">Start Test</button>
+        <button type="button" id="finishTest">Finish Test</button>
     </form>
     <div class="scoreboard">
-        <h3>Scoreboard</h3>
         <div>Email Sent: <span id="emailSentScore">0</span></div>
         <div>Message Sent to Asako Satoshi: <span id="messageSentToAsakoSatoshiScore">0</span></div>
         <div>Message Sent to Lily Wang: <span id="messageSentToLilyWangScore">0</span></div>
@@ -111,6 +174,8 @@
     </div>
 </body>
 </html>
+ *@
+@* path views/ApplicantTestPart *@
 
 
 

@@ -3,6 +3,8 @@ using OrchardCore.ContentManagement;
 namespace ApplicantTest.Models;
 public class ApplicantTestPart : ContentPart
 {
+    public Timer Timer { get; set; }
+
     public string ApplicantTest { get; set; }
 
     public string ContentItemId { get; set; }
@@ -26,5 +28,4 @@ public class ApplicantTestPart : ContentPart
     public int MessageSentToDominicGonzalez { get; set; }
 
     public int MessageSentToSimoneKhan { get; set; }
-
 }
