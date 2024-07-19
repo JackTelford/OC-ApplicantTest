@@ -15,14 +15,10 @@ public class ApplicantTestDisplayDriver : ContentPartDisplayDriver<ApplicantTest
 {
     internal readonly IStringLocalizer S;
 
-    private readonly ApplicantTestContentHandler _contentHandler;
-
     public ApplicantTestDisplayDriver(
-        IStringLocalizer<ApplicantTestDisplayDriver> stringLocalizer,
-        ApplicantTestContentHandler contentHandler)
+        IStringLocalizer<ApplicantTestDisplayDriver> stringLocalizer)
     {
         S = stringLocalizer;
-        _contentHandler = contentHandler;
     }
 
     public override IDisplayResult Display(ApplicantTestPart part, BuildPartDisplayContext context)
@@ -68,13 +64,14 @@ public class ApplicantTestDisplayDriver : ContentPartDisplayDriver<ApplicantTest
         if (await updater.TryUpdateModelAsync(part, Prefix))
         {
             Console.WriteLine($"Updating part: {part.ContentItemId}");
+            Console.WriteLine($"Submitted Data: Email: {part.Email}, BookmarkClicked: {part.BookMarkClicked}, FormSubmitted: {part.formSubmitted}, UserName: {part.UserName}");
             // Update fields on conditions
             part.BookMarkClicked = part.BookMarkClicked > 0 ? 1 : 0;
             part.Email = part.Email > 0 ? 1 : 0;
             part.formSubmitted = part.formSubmitted > 0 ? 1 : 0;
-            /*part.TestTakenAt ??= DateTime.UtcNow;*/
+            /* part.TestTakenAt ??= DateTime.UtcNow;*/
             part.UserName ??= "Anonymous";
-            /*part.ApplicantTest ??= "No Test Taken";*/
+            /*  part.ApplicantTest ??= "No Test Taken";*/
             part.MessageSentToAsakoSatoshi = part.MessageSentToAsakoSatoshi > 0 ? 1 : 0;
             part.MessageSentToLilyWang = part.MessageSentToLilyWang > 0 ? 1 : 0;
             part.MessageSentToMadisonByers = part.MessageSentToMadisonByers > 0 ? 1 : 0;
@@ -86,8 +83,12 @@ public class ApplicantTestDisplayDriver : ContentPartDisplayDriver<ApplicantTest
         else
         {
             Console.WriteLine($"Failed to update part: {part.ContentItemId}");
+            foreach (var error in updater.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                Console.WriteLine($"Validation error: {error.ErrorMessage}");
+            }
         }
-
         return Edit(part, context);
     }
 }
+

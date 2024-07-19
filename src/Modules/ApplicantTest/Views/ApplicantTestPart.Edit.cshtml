@@ -12,23 +12,6 @@
             margin: 0;
         }
 
-        .scoreboard {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #f8f8f8;
-            padding: 5px 10px;
-            border-top: 1px solid #ddd;
-            font-size: 12px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-            .scoreboard div {
-                margin: 0 10px;
-            }
-
         .iframe-container {
             width: 100%;
             height: 44rem;
@@ -50,93 +33,98 @@
             cursor: pointer;
         }
     </style>
+</head>
+<body>
     <script>
+        var footsteps = [];
         document.addEventListener('DOMContentLoaded', () => {
-            const emailSentField = document.getElementById('EmailSent');
-            const messageSentToAsakoSatoshiField = document.getElementById('MessageSentToAsakoSatoshi');
-            const messageSentToLilyWangField = document.getElementById('MessageSentToLilyWang');
-            const messageSentToMadisonByersField = document.getElementById('MessageSentToMadisonByers');
-            const messageSentToDominicGonzalezField = document.getElementById('MessageSentToDominicGonzalez');
-            const messageSentToSimoneKhanField = document.getElementById('MessageSentToSimoneKhan');
-            const bookmarkClickedField = document.getElementById('BookmarkClicked');
-            const formSubmittedField = document.getElementById('FormSubmitted');
-            const usernameField = document.getElementById('UserName');
-            const form = document.getElementById('eventForm');
+            console.log('DOM fully loaded and parsed');
 
-            async function updateFootsteps(field) {
-                field.value = parseInt(field.value) + 1;
-                console.log(`Updating field: ${field.name} to value: ${field.value}`);
-                form.submit();
-            }
-
-            function updateScoreboard() {
-                console.log('Updating scoreboard');
-                document.getElementById('emailSentScore').innerText = emailSentField.value;
-                document.getElementById('messageSentToAsakoSatoshiScore').innerText = messageSentToAsakoSatoshiField.value;
-                document.getElementById('messageSentToLilyWangScore').innerText = messageSentToLilyWangField.value;
-                document.getElementById('messageSentToMadisonByersScore').innerText = messageSentToMadisonByersField.value;
-                document.getElementById('messageSentToDominicGonzalezScore').innerText = messageSentToDominicGonzalezField.value;
-                document.getElementById('messageSentToSimoneKhanScore').innerText = messageSentToSimoneKhanField.value;
-                document.getElementById('bookmarkClickedScore').innerText = bookmarkClickedField.value;
-                document.getElementById('formSubmittedScore').innerText = formSubmittedField.value;
-            }
-
+            // Listen for messages from the iframe
             window.addEventListener('message', (event) => {
-                console.log('Received message:', event);
+                console.log('Message received:', event);
                 if (event.data && event.data.event === 'emailSent') {
                     console.log('Email sent event captured in the parent document!', event.data.details);
-                    updateFootsteps(emailSentField);
-                } else if (event.data && event.data.event === 'messageSent') {
+                    footsteps.push({ name: 'emailSent', value: 1 });
+                    document.getElementById('Email').value = 1;
+                }
+                else if (event.data && event.data.event === 'messageSent') {
                     console.log('Message sent event captured in the parent document!', event.data.details);
-                    updateFootsteps(messageSentToAsakoSatoshiField);
-                } else if (event.data && event.data.event === 'bookmarkClicked') {
+                    footsteps.push({ name: 'messageSent', value: 1 });
+                    switch (event.data.details.selectedUser) {
+                        case 'Asako Satoshi':
+                            document.getElementById('MessageSentToAsakoSatoshi').value = 1;
+                            break;
+                        case 'Lily Wang':
+                            document.getElementById('MessageSentToLilyWang').value = 1;
+                            break;
+                        case 'Madison Byers':
+                            document.getElementById('MessageSentToMadisonByers').value = 1;
+                            break;
+                        case 'Dominic Gonzalez':
+                            document.getElementById('MessageSentToDominicGonzalez').value = 1;
+                            break;
+                        case 'Simone Khan':
+                            document.getElementById('MessageSentToSimoneKhan').value = 1;
+                            break;
+                        default:
+                            console.error('Unknown user:', event.data.details.selectedUser);
+                    }
+                }
+                else if (event.data && event.data.event === 'bookmarkClicked') {
                     console.log('Bookmark clicked event captured in the parent document!', event.data.details);
-                    updateFootsteps(bookmarkClickedField);
-                } else if (event.data && event.data.event === 'formSubmitted') {
-                    console.log('Form submitted event captured in the parent document!', event.data.details);
-                    updateFootsteps(formSubmittedField);
-                } else {
+                    footsteps.push({ name: 'bookmarkClicked', value: 1 });
+                    document.getElementById('BookMarkClicked').value = 1;
+                }
+                else if (event.data && event.data.event === 'formSubmitted') {
+                    console.log('RDIForm submitted event captured in the parent document!', event.data.details);
+                    footsteps.push({ name: 'formSubmitted', value: 1 });
+                    document.getElementById('formSubmitted').value = 1;
+                }
+                else {
                     console.log('Unknown event received:', event.data);
+                }
+                console.log('Current footsteps array:', footsteps);
+            });
+
+            document.getElementById('startTest').addEventListener('click', () => {
+                const userNameElement = document.getElementById('UserName');
+                if (userNameElement) {
+                    console.log('Test started for user:', userNameElement.value);
+                    footsteps.push({ name: 'startTest', value: userNameElement.value });
+                } else {
+                    console.error('Element with ID "UserName" not found');
                 }
             });
 
-            updateScoreboard();
-            document.getElementById('startTest').addEventListener('click', () => {
-                console.log('Test started for user:', usernameField.value);
-            });
-
             document.getElementById('finishTest').addEventListener('click', () => {
-                console.log('Test finished for user:', usernameField.value);
+                const formData = new FormData(document.querySelector('form'));
+                formData.forEach((value, key) => {
+                    console.log(`${key}: ${value}`);
+                });
             });
         });
+
     </script>
-</head>
-<body>
+
     <div class="iframe-container">
         <iframe src="/ApplicantTest/ApplicantTest/index.html" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
     </div>
-    <form id="eventForm" method="post">
-        <input type="hidden" id="EmailSent" name="EmailSent" value="0" />
-        <input type="hidden" id="MessageSentToAsakoSatoshi" name="MessageSentToAsakoSatoshi" value="0" />
-        <input type="hidden" id="MessageSentToLilyWang" name="MessageSentToLilyWang" value="0" />
-        <input type="hidden" id="MessageSentToMadisonByers" name="MessageSentToMadisonByers" value="0" />
-        <input type="hidden" id="MessageSentToDominicGonzalez" name="MessageSentToDominicGonzalez" value="0" />
-        <input type="hidden" id="MessageSentToSimoneKhan" name="MessageSentToSimoneKhan" value="0" />
-        <input type="hidden" id="BookmarkClicked" name="BookmarkClicked" value="0" />
-        <input type="hidden" id="FormSubmitted" name="FormSubmitted" value="0" />
-        <input type="text" id="UserName" name="UserName" placeholder="Enter your username" required />
+
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <input type="number" id="Email" name="Email" value="0" onerror="console.error('error capturing email')" />
+        <input type="number" id="MessageSentToAsakoSatoshi" name="MessageSentToAsakoSatoshi" value="0" onerror="console.error('messagefail')" />
+        <input type="number" id="MessageSentToLilyWang" name="MessageSentToLilyWang" value="0" style="display:none;" onerror="console.error('messagefail')" />
+        <input type="number" id="MessageSentToMadisonByers" name="MessageSentToMadisonByers" value="0" style="display:none;" onerror="console.error('messagefail')" />
+        <input type="number" id="MessageSentToDominicGonzalez" name="MessageSentToDominicGonzalez" value="0" style="display:none;" onerror="console.error('messagefail')" />
+        <input type="number" id="MessageSentToSimoneKhan" name="MessageSentToSimoneKhan" value="0" style="display:none;" onerror="console.error('messagefail')" />
+        <input type="number" id="BookMarkClicked" name="BookMarkClicked" value="0" onerror="console.error('bookmarkfail')" />
+        <input type="number" id="formSubmitted" name="formSubmitted" value="0" style="display:none;" onerror="console.error('formsumbit error')" />
+        <input type="text" id="UserName" name="UserName" placeholder="Enter your username" required onerror="console.error('Username fail')" />
         <button type="button" id="startTest">Start Test</button>
         <button type="button" id="finishTest">Finish Test</button>
     </form>
-    <div class="scoreboard">
-        <div>Email Sent: <span id="emailSentScore">0</span></div>
-        <div>Message Sent to Asako Satoshi: <span id="messageSentToAsakoSatoshiScore">0</span></div>
-        <div>Message Sent to Lily Wang: <span id="messageSentToLilyWangScore">0</span></div>
-        <div>Message Sent to Madison Byers: <span id="messageSentToMadisonByersScore">0</span></div>
-        <div>Message Sent to Dominic Gonzalez: <span id="messageSentToDominicGonzalezScore">0</span></div>
-        <div>Message Sent to Simone Khan: <span id="messageSentToSimoneKhanScore">0</span></div>
-        <div>Bookmark Clicked: <span id="bookmarkClickedScore">0</span></div>
-        <div>Form Submitted: <span id="formSubmittedScore">0</span></div>
-    </div>
+
 </body>
 </html>
