@@ -3,29 +3,31 @@ using OrchardCore.ContentManagement;
 namespace ApplicantTest.Models;
 public class ApplicantTestPart : ContentPart
 {
-    public Timer Timer { get; set; }
+    public double? Score { get; set; }
 
-    public string ApplicantTest { get; set; }
+    public bool EmailSent { get; set; }
+    public double EmailSentWeight { get; set; }
 
-    public string ContentItemId { get; set; }
+    public bool MessageSentToAsakoSatoshi { get; set; }
+    public double MessageSentToAsakoSatoshiWeight { get; set; }
 
-    public string UserName { get; set; }
+    public bool MessageSentToLilyWang { get; set; }
+    public double MessageSentToLilyWangWeight { get; set; }
 
-    public DateTime TestTakenAt { get; set; }
+    public bool MessageSentToMadisonByers { get; set; }
+    public double MessageSentToMadisonByersWeight { get; set; }
 
-    public int Email { get; set; }
+    public bool MessageSentToDominicGonzalez { get; set; }
+    public double MessageSentToDominicGonzalezWeight { get; set; }
 
-    public int BookMarkClicked { get; set; }
+    public bool MessageSentToSimoneKhan { get; set; }
+    public double MessageSentToSimoneKhanWeight { get; set; }
 
-    public int formSubmitted { get; set; }
+    public bool BookmarkClicked { get; set; }
+    public double BookmarkClickedWeight { get; set; }
 
-    public int MessageSentToAsakoSatoshi { get; set; }
+    public bool FormSubmitted { get; set; }
+    public double FormSubmittedWeight { get; set; }
 
-    public int MessageSentToLilyWang { get; set; }
-
-    public int MessageSentToMadisonByers { get; set; }
-
-    public int MessageSentToDominicGonzalez { get; set; }
-
-    public int MessageSentToSimoneKhan { get; set; }
+    public decimal? Value { get; set; }
 }

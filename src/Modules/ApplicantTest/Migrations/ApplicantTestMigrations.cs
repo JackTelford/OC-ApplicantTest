@@ -1,4 +1,5 @@
 using ApplicantTest.Indexes;
+using OrchardCore.ContentManagement;
 using OrchardCore.ContentManagement.Metadata;
 using OrchardCore.ContentManagement.Metadata.Settings;
 using OrchardCore.Data.Migration;
@@ -78,5 +79,21 @@ public class ApplicantTestMigrations : DataMigration
           .Column<int>("MessageSentToSimoneKhan")
         );
         return 3;
+    }
+
+    public async Task<int> UpdateFrom3Async()
+    {
+        await _contentDefinitionManager.AlterTypeDefinitionAsync("ApplicantTest", type => type
+                .WithPart("ApplicantTestPart")
+                  .Creatable()
+                  .Listable()
+              );
+
+        await _contentDefinitionManager.AlterPartDefinitionAsync("ApplicantTestPart", part => part
+           .Attachable()
+           .WithDisplayName("ApplicantTest App")
+           .WithDescription("Part to Attach to display the Applicant testing App.")
+        );
+        return 4;
     }
 }

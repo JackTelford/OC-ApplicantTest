@@ -5,29 +5,29 @@ using YesSql.Indexes;
 namespace ApplicantTest.Indexes;
 public class ApplicantTestIndex : MapIndex
 {
-    public string ContentItemId { get; set; }
+    /*    public string ContentItemId { get; set; }
 
-    public string UserName { get; set; }
+        public string UserName { get; set; }
 
-    public DateTime TestTakenAt { get; set; }
+        public DateTime TestTakenAt { get; set; }
 
-    public Timer Timer { get; set; }
+        public Timer Timer { get; set; }
 
-    public int Email { get; set; }
+        public int Email { get; set; }
 
-    public int BookMarkClicked { get; set; }
+        public int BookMarkClicked { get; set; }
 
-    public int formSubmitted { get; set; }
+        public int formSubmitted { get; set; }
 
-    public int MessageSentToAsakoSatoshi { get; set; }
+        public int MessageSentToAsakoSatoshi { get; set; }
 
-    public int MessageSentToLilyWang { get; set; }
+        public int MessageSentToLilyWang { get; set; }
 
-    public int MessageSentToMadisonByers { get; set; }
+        public int MessageSentToMadisonByers { get; set; }
 
-    public int MessageSentToDominicGonzalez { get; set; }
+        public int MessageSentToDominicGonzalez { get; set; }
 
-    public int MessageSentToSimoneKhan { get; set; }
+        public int MessageSentToSimoneKhan { get; set; }*/
 }
 
 public class ApplicantTestIndexProvider : IndexProvider<ContentItem>
@@ -44,18 +44,18 @@ public class ApplicantTestIndexProvider : IndexProvider<ContentItem>
                 }
                 return new ApplicantTestIndex
                 {
-                    ContentItemId = contentItem.ContentItemId,
-                    Email = applicantTestPart.Email,
-                    TestTakenAt = applicantTestPart.TestTakenAt,
-                    Timer = applicantTestPart.Timer,
-                    UserName = applicantTestPart.UserName,
-                    BookMarkClicked = applicantTestPart.BookMarkClicked,
-                    formSubmitted = applicantTestPart.formSubmitted,
-                    MessageSentToAsakoSatoshi = applicantTestPart.MessageSentToAsakoSatoshi,
-                    MessageSentToLilyWang = applicantTestPart.MessageSentToLilyWang,
-                    MessageSentToMadisonByers = applicantTestPart.MessageSentToMadisonByers,
-                    MessageSentToDominicGonzalez = applicantTestPart.MessageSentToDominicGonzalez,
-                    MessageSentToSimoneKhan = applicantTestPart.MessageSentToSimoneKhan
+                    /*      ContentItemId = contentItem.ContentItemId,
+                          Email = applicantTestPart.Email,
+                          TestTakenAt = applicantTestPart.TestTakenAt,
+                          Timer = applicantTestPart.Timer,
+                          UserName = applicantTestPart.UserName,
+                          BookMarkClicked = applicantTestPart.BookMarkClicked,
+                          formSubmitted = applicantTestPart.formSubmitted,
+                          MessageSentToAsakoSatoshi = applicantTestPart.MessageSentToAsakoSatoshi,
+                          MessageSentToLilyWang = applicantTestPart.MessageSentToLilyWang,
+                          MessageSentToMadisonByers = applicantTestPart.MessageSentToMadisonByers,
+                          MessageSentToDominicGonzalez = applicantTestPart.MessageSentToDominicGonzalez,
+                          MessageSentToSimoneKhan = applicantTestPart.MessageSentToSimoneKhan*/
                 };
             });
     }

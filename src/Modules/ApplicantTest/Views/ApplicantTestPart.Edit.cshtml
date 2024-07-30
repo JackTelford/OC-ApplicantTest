@@ -24,107 +24,96 @@
                 border: none;
             }
 
-        #startTest {
-            margin: 10px;
-            padding: 5px 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <script>
-        var footsteps = [];
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM fully loaded and parsed');
-
             // Listen for messages from the iframe
             window.addEventListener('message', (event) => {
                 console.log('Message received:', event);
                 if (event.data && event.data.event === 'emailSent') {
                     console.log('Email sent event captured in the parent document!', event.data.details);
-                    footsteps.push({ name: 'emailSent', value: 1 });
-                    document.getElementById('Email').value = 1;
-                }
-                else if (event.data && event.data.event === 'messageSent') {
+                    document.getElementById('emailSent').value = 'true';
+                } else if (event.data && event.data.event === 'messageSent') {
                     console.log('Message sent event captured in the parent document!', event.data.details);
-                    footsteps.push({ name: 'messageSent', value: 1 });
                     switch (event.data.details.selectedUser) {
                         case 'Asako Satoshi':
-                            document.getElementById('MessageSentToAsakoSatoshi').value = 1;
+                            document.getElementById('messageSentToAsakoSatoshi').value = 'true';
                             break;
                         case 'Lily Wang':
-                            document.getElementById('MessageSentToLilyWang').value = 1;
+                            document.getElementById('messageSentToLilyWang').value = 'true';
                             break;
                         case 'Madison Byers':
-                            document.getElementById('MessageSentToMadisonByers').value = 1;
+                            document.getElementById('messageSentToMadisonByers').value = 'true';
                             break;
                         case 'Dominic Gonzalez':
-                            document.getElementById('MessageSentToDominicGonzalez').value = 1;
+                            document.getElementById('messageSentToDominicGonzalez').value = 'true';
                             break;
                         case 'Simone Khan':
-                            document.getElementById('MessageSentToSimoneKhan').value = 1;
+                            document.getElementById('messageSentToSimoneKhan').value = 'true';
                             break;
                         default:
                             console.error('Unknown user:', event.data.details.selectedUser);
                     }
-                }
-                else if (event.data && event.data.event === 'bookmarkClicked') {
+                } else if (event.data && event.data.event === 'bookmarkClicked') {
                     console.log('Bookmark clicked event captured in the parent document!', event.data.details);
-                    footsteps.push({ name: 'bookmarkClicked', value: 1 });
-                    document.getElementById('BookMarkClicked').value = 1;
-                }
-                else if (event.data && event.data.event === 'formSubmitted') {
-                    console.log('RDIForm submitted event captured in the parent document!', event.data.details);
-                    footsteps.push({ name: 'formSubmitted', value: 1 });
-                    document.getElementById('formSubmitted').value = 1;
-                }
-                else {
+                    document.getElementById('bookmarkClicked').value = 'true';
+                } else if (event.data && event.data.event === 'formSubmitted') {
+                    console.log('Form submitted event captured in the parent document!', event.data.details);
+                    document.getElementById('formSubmitted').value = 'true';
+                } else {
                     console.log('Unknown event received:', event.data);
                 }
-                console.log('Current footsteps array:', footsteps);
-            });
-
-            document.getElementById('startTest').addEventListener('click', () => {
-                const userNameElement = document.getElementById('UserName');
-                if (userNameElement) {
-                    console.log('Test started for user:', userNameElement.value);
-                    footsteps.push({ name: 'startTest', value: userNameElement.value });
-                } else {
-                    console.error('Element with ID "UserName" not found');
-                }
-            });
-
-            document.getElementById('finishTest').addEventListener('click', () => {
-                const formData = new FormData(document.querySelector('form'));
-                formData.forEach((value, key) => {
-                    console.log(`${key}: ${value}`);
-                });
             });
         });
-
     </script>
-
     <div class="iframe-container">
         <iframe src="/ApplicantTest/ApplicantTest/index.html" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
     </div>
-
-    <form method="post">
-        @Html.AntiForgeryToken()
-        <input type="number" id="Email" name="Email" value="0" onerror="console.error('error capturing email')" />
-        <input type="number" id="MessageSentToAsakoSatoshi" name="MessageSentToAsakoSatoshi" value="0" onerror="console.error('messagefail')" />
-        <input type="number" id="MessageSentToLilyWang" name="MessageSentToLilyWang" value="0" style="display:none;" onerror="console.error('messagefail')" />
-        <input type="number" id="MessageSentToMadisonByers" name="MessageSentToMadisonByers" value="0" style="display:none;" onerror="console.error('messagefail')" />
-        <input type="number" id="MessageSentToDominicGonzalez" name="MessageSentToDominicGonzalez" value="0" style="display:none;" onerror="console.error('messagefail')" />
-        <input type="number" id="MessageSentToSimoneKhan" name="MessageSentToSimoneKhan" value="0" style="display:none;" onerror="console.error('messagefail')" />
-        <input type="number" id="BookMarkClicked" name="BookMarkClicked" value="0" onerror="console.error('bookmarkfail')" />
-        <input type="number" id="formSubmitted" name="formSubmitted" value="0" style="display:none;" onerror="console.error('formsumbit error')" />
-        <input type="text" id="UserName" name="UserName" placeholder="Enter your username" required onerror="console.error('Username fail')" />
-        <button type="button" id="startTest">Start Test</button>
-        <button type="button" id="finishTest">Finish Test</button>
-    </form>
-
+    <fieldset class="form-group hidden" asp-validation-class-for="EmailSent">
+        <label asp-for="EmailSent">Email Sent</label>
+        <input type="hidden" asp-for="EmailSent" class="form-check-input" id="emailSent" value="false" />
+        <span asp-validation-for="EmailSent" class="text-danger"></span>
+    </fieldset>
+    <fieldset class="form-group hidden" asp-validation-class-for="MessageSentToAsakoSatoshi">
+        <label asp-for="MessageSentToAsakoSatoshi">Message Sent To Asako Satoshi</label>
+        <input type="hidden" asp-for="MessageSentToAsakoSatoshi" class="form-check-input" id="messageSentToAsakoSatoshi" value="false" />
+        <span asp-validation-for="MessageSentToAsakoSatoshi" class="text-danger"></span>
+    </fieldset>
+    <fieldset class="form-group hidden" asp-validation-class-for="MessageSentToLilyWang">
+        <label asp-for="MessageSentToLilyWang">Message Sent To Lily Wang</label>
+        <input type="hidden" asp-for="MessageSentToLilyWang" class="form-check-input" id="messageSentToLilyWang" value="false" />
+        <span asp-validation-for="MessageSentToLilyWang" class="text-danger"></span>
+    </fieldset>
+    <fieldset class="form-group hidden" asp-validation-class-for="MessageSentToMadisonByers">
+        <label asp-for="MessageSentToMadisonByers">Message Sent To Madison Byers</label>
+        <input type="hidden" asp-for="MessageSentToMadisonByers" class="form-check-input" id="messageSentToMadisonByers" value="false" />
+        <span asp-validation-for="MessageSentToMadisonByers" class="text-danger"></span>
+    </fieldset>
+    <fieldset class="form-group hidden" asp-validation-class-for="MessageSentToDominicGonzalez">
+        <label asp-for="MessageSentToDominicGonzalez">Message Sent To Dominic Gonzalez</label>
+        <input type="hidden" asp-for="MessageSentToDominicGonzalez" class="form-check-input" id="messageSentToDominicGonzalez" value="false" />
+        <span asp-validation-for="MessageSentToDominicGonzalez" class="text-danger"></span>
+    </fieldset>
+    <fieldset class="form-group hidden" asp-validation-class-for="MessageSentToSimoneKhan">
+        <label asp-for="MessageSentToSimoneKhan">Message Sent To Simone Khan</label>
+        <input type="hidden" asp-for="MessageSentToSimoneKhan" class="form-check-input" id="messageSentToSimoneKhan" value="false" />
+        <span asp-validation-for="MessageSentToSimoneKhan" class="text-danger"></span>
+    </fieldset>
+    <fieldset class="form-group hidden" asp-validation-class-for="BookmarkClicked">
+        <label asp-for="BookmarkClicked">Bookmark Clicked</label>
+        <input type="hidden" asp-for="BookmarkClicked" class="form-check-input" id="bookmarkClicked" value="false" />
+        <span asp-validation-for="BookmarkClicked" class="text-danger"></span>
+    </fieldset>
+    @*     <fieldset class="form-group hidden" asp-validation-class-for="FormSubmitted">
+    <label asp-for="FormSubmitted">Form Submitted</label>
+    <input type="hidden" asp-for="FormSubmitted" class="form-check-input" id="formSubmitted" value="false" />
+    <span asp-validation-for="FormSubmitted" class="text-danger"></span>
+    </fieldset> *@
 </body>
 </html>
