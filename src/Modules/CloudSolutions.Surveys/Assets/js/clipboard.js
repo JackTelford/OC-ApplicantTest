@@ -1,2 +1,0 @@
-﻿
-new ClipboardJS('.clipboard-button');

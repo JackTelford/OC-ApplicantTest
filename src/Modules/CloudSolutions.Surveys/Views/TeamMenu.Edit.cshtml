@@ -1,8 +1,0 @@
-﻿@model TeamMenuViewModel
-
-<div class="col p-1">
-    <label class="sr-only" asp-for="TeamId">@T["Team"]</label>
-    <select asp-for="TeamId" class="form-control" asp-items="@Model.Teams">
-        <option value="">@T["Any Team"]</option>
-    </select>
-</div>

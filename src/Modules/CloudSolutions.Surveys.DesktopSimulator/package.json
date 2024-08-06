@@ -1,0 +1,14 @@
+{
+  "name": "cloudsolutions.surveys.desktopsimulator",
+  "version": "1.0.0",
+  "scripts": {
+    "preinstall": "npm install -g npm@latest",
+    "postinstall": "npm install buffer"
+  },
+  "dependencies": {
+    "rdi.desktop.simulator.out": "^1.0.3"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}

@@ -1,9 +1,0 @@
-@model SurveyVersionMenuViewModel
-@inject CloudSolutions.Surveys.Core.ISurveyPresenter SurveyPresneter
-
-<div class="col p-1">
-    <label asp-for="VersionId" class="sr-only"></label>
-    <select class="form-select" asp-for="VersionId" asp-items="@await SurveyPresneter.GetVersionsSelectListItemsAsync()">
-        <option value="">@T["Select a Survey"]</option>
-    </select>
-</div>
