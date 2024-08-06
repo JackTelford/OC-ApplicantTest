@@ -1,0 +1,75 @@
+@model CloudSolutions.Surveys.ViewModels.IntervieweeMenuViewModel
+@using CloudSolutions.ContentRestrictions
+@using OrchardCore.Users.Indexes
+@using OrchardCore.Users.Models
+@using YesSql
+@using CloudSolutions.Teams
+@using CloudSolutions.Teams.Models
+@using Microsoft.Extensions.DependencyInjection
+@using OrchardCore.Entities
+@using YesSql.Services
+
+@inject ISession Session
+@inject CrestApps.Components.IDisplayNameProvider DisplayNameProvider
+@inject IAccessibleUserService AccessibleUserService
+
+@{
+    var userOptions = new List<SelectListItem>();
+    var groups = new List<SelectListGroup>();
+    var teamStore = ViewContext.HttpContext.RequestServices.GetService<ITeamStore>();
+    var teams = Enumerable.Empty<SelectListItem>();
+    if (teamStore != null)
+    {
+        teams = await teamStore.GetItemsAsync();
+    }
+
+    var query = Session.Query<User, UserIndex>(x => x.IsEnabled);
+
+    if (await AccessibleUserService.RestrictContentAsync())
+    {
+        var userIds = await AccessibleUserService.UserIdsAsync();
+
+        query.With<UserIndex>(x => x.UserId.IsIn(userIds));
+    }
+
+    var users = await query.ListAsync();
+
+    foreach (var user in users)
+    {
+        var item = new SelectListItem()
+                {
+                    Text = await DisplayNameProvider.GetAsync(user),
+                    Value = user.UserId,
+                };
+
+        var teamPart = user.As<UserTeamPart>();
+
+        if (teamPart?.TeamIds?.Length > 0)
+        {
+            var teamName = teams.FirstOrDefault(x => x.Value == teamPart.TeamIds[0])?.Text;
+
+            var group = groups.FirstOrDefault(x => teamName != null && String.Equals(x.Name, teamName, StringComparison.OrdinalIgnoreCase));
+
+            if (group == null)
+            {
+                group = new SelectListGroup()
+                        {
+                            Name = teamName,
+                        };
+
+                groups.Add(group);
+            }
+
+            item.Group = group;
+        }
+
+        userOptions.Add(item);
+    }
+}
+
+<div class="col p-1">
+    <label asp-for="UserId" class="sr-only">@T["Interviewee"]</label>
+    <select class="form-control content-preview-select" asp-for="UserId" asp-items="@(userOptions.OrderBy(x => x.Group?.Name).ThenBy(x => x.Text))">
+        <option value="">@T["Any Interviewee"]</option>
+    </select>
+</div>

@@ -1,0 +1,191 @@
+@using OrchardCore
+@using OrchardCore.ContentFields.Settings
+
+@model OrchardCore.ContentFields.ViewModels.PredefinedListSettingsViewModel
+@inject OrchardCore.ResourceManagement.IResourceManager ResourceManager
+@{
+    var htmlId = Html.IdFor(x => x);
+    var htmlName = Html.NameFor(x => x);
+    SurveyResourceManagementManifest.InjectResource(ResourceManager);
+
+    ResourceManager.RegisterResource("script", "Coloris").AtFoot();
+    ResourceManager.RegisterResource("stylesheet", "Coloris").AtHead();
+}
+<style asp-src="~/OrchardCore.ContentFields/Styles/optionsEditor.min.css" debug-src="~/OrchardCore.ContentFields/Styles/optionsEditor.css"></style>
+
+<script at="Foot" depends-on="Coloris">
+    Coloris({
+        el: '[data-coloris]',
+        defaultColor: '#000000',
+        swatches: [
+            '#000000', // black
+            '#808080', // gray
+            '#0000FF', // blue
+            '#ADD8E6', // light blue
+            '#264d00', // dark gren
+            '#008000', // green
+            '#90EE90', // light green
+            '#6bd600', // very light green
+            '#800080', // purple
+            '#CBC3E3', // light purple
+            '#FF0000', // Red
+            '#ffcccb', // peach
+            '#FFFFFF', // whie
+            '#FFA500', // orange
+            '#FFD580',  // light orange
+            '#ffca0a' // yellow
+        ]
+    });
+
+    initializeOptionsEditor(document.getElementById('@htmlId'),
+    @Html.Raw(Model.Options),
+        '@Model.DefaultValue',
+        document.getElementsByClassName('@Html.IdFor(m => m)-ModalBody'),
+        '#@htmlId-options-table',
+        '#@htmlId-options-modal'
+    );
+</script>
+
+<script type="text/x-template" id="@htmlId-options-table">
+    <table class="table table-bordered table-sm options-table">
+        <thead>
+            <tr>
+                <th scope="col">@T["Option Label"]</th>
+                <th scope="col">@T["Value"]</th>
+                <th scope="col">@T["Weight"]</th>
+                <th scope="col" colspan="3">@T["Default?"]</th>
+            </tr>
+        </thead>
+        <draggable v-model="data.options" :tag="'tbody'" v-for="(option, index) in data.options" :key="index">
+            <tr :class="index % 2 ? 'table-secondary': ''">
+                <td>
+                    <input type="text" class="form-control" v-model="option.name" :name="`@(htmlName).Options[${index}].Name`" placeholder="Enter a name" />
+                </td>
+                <td>
+                    <input type="text" class="form-control courrier" v-model="option.value" :name="`@(htmlName).Options[${index}].Value`" placeholder="Enter a value" />
+                </td>
+                <td>
+                    <input type="number" step="0.01" class="form-control" v-model="option.weight" :name="`@(htmlName).Options[${index}].Weight`" placeholder="Enter a weight" />
+                </td>
+                <td class="text-center align-middle">
+                    <div class="custom-control custom-radio ml-2">
+                        <input type="radio" class="custom-control-input" :id="'@(htmlName)_customRadio_' + index" name="@Html.NameFor(m => m.DefaultValue)" v-bind:value="option.value" v-model="data.selected" v-on:click="uncheck(index)">
+                        <label class="custom-control-label" title="@T["Set as default"]" v-bind:for="'@(htmlName)_customRadio_' + index"></label>
+                    </div>
+                </td>
+                <td class="text-center">
+                    <a v-on:click="remove(index)" href="javascript:void(0)" title="@T["Remove element from list"]" class="btn">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </a>
+                </td>
+                <td class="text-center"><div class="btn cursor-move"><i class="fas fa-arrows-alt" aria-hidden="true"></i></div></td>
+            </tr>
+            <tr :class="index % 2 ? 'table-secondary': ''">
+                <td colspan="3">
+                    <textarea class="form-control" v-model="option.description" :name="`@(htmlName).Options[${index}].Description`" placeholder="@T["Optionally, provide description to guide the interviewer"]"></textarea>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr :class="index % 2 ? 'table-secondary': ''">
+                <td>
+                    <label :for="`@(htmlName)_Options_${index}_BackgroundColor`">@T["Background color to use for reporting"]</label>
+                    <input data-coloris type="text" v-model="option.backgroundColor" :name="`@(htmlName).Options[${index}].BackgroundColor`" :id="`@(htmlName)_Options_${index}_BackgroundColor`" />
+                </td>
+                <td>
+                    <label :for="`@(htmlName)_Options_${index}_FontColor`">@T["Font color to use for reporting"]</label>
+                    <input data-coloris type="text" v-model="option.fontColor" :name="`@(htmlName).Options[${index}].FontColor`" :id="`@(htmlName)_Options_${index}_FontColor`" />
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </draggable>
+        <tfoot>
+            <tr>
+                <td class="col-sm-12 text-center" colspan="5">
+                    <a v-on:click="add()" class="btn btn-light w-100 btn-sm"><i class="fas fa-plus small" aria-hidden="true"></i> @T["Add an option"]</a>
+                    <input class="form-control" id="@Html.IdFor(m => m.Options)" name="@Html.NameFor(m => m.Options)" type="hidden" v-bind:value="getOptionsFormattedList()" />
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</script>
+
+<script type="text/x-template" id="@htmlId-options-modal">
+            <div class="modal fade @htmlId-ModalBody text-start" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">@T["Edit Data"]</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="@Orchard.GetWrapperClasses()">
+                                <label for="options-defaultvalue" class="@Orchard.GetLabelClasses()">@T["Default value"]</label>
+                                <input id="options-defaultvalue" name="options-defaultvalue" class="form-control" type="text" v-model="data.selected" />
+                                <span class="hint">@T["(Optional) The default to assign to the text field."]</span>
+                            </div>
+                            <div class="@Orchard.GetWrapperClasses()">
+                                <label for="options-textarea" class="@Orchard.GetLabelClasses()">@T["Options"]</label>
+                                <div class="@Orchard.GetEndClasses()">
+                                    <textarea id="options-textarea" name="options-textarea" rows="8" class="form-control" v-bind:value="JSON.stringify(data.options)" v-on:input="data.options = JSON.parse($event.target.value)"></textarea>
+                                    <span class="hint">@T["A JSON representation of the allowed values, e.g."]
+                                    <pre>
+    [
+        {
+            "name":"First option",
+            "value":"option1",
+            "weight":null,
+            "description":"",
+            "backgroundColor":"#ffffff",
+            "fontColor":"#000000"
+        },
+        {
+            "name":"Second option",
+            "value":"option2",
+            "weight":null,
+            "description":"",
+            "backgroundColor":"#ffffff",
+            "fontColor":"#000000"
+        }
+    ]
+                                    </pre>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary btn-submit" v-on:click="closeModal()">@T["OK"]</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@T["Cancel"]</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</script>
+
+<div id="@htmlId" class="field-editor field-editor-predefinedlist">
+    <div class="@Orchard.GetWrapperClasses()">
+        <label asp-for="Editor" class="@Orchard.GetLabelClasses()">@T["What type of list editor should be used?"]</label>
+        <div class="@Orchard.GetEndClasses()">
+            <select asp-for="Editor" class="form-control">
+                <option value="@nameof(EditorOption.Dropdown)">@T["Drop down list"]</option>
+                <option value="@nameof(EditorOption.Radio)">@T["Radio buttons"]</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="@Orchard.GetWrapperClasses()">
+        <div class="@Orchard.GetEndClasses(true)">
+            <div class="bg-info">
+                <h5 class="float-start">@T["Options"]</h5>
+                <a href="javascript:void(0)" v-on:click="showModal" class="btn btn-sm btn-dark float-end" style="padding-left:0.65rem;" title="@T["Edit Data"]"><i class="fas fa-edit" aria-hidden="true"></i></a>
+            </div>
+            <options-table :data="sharedState"></options-table>
+            <options-modal :data="sharedState" v-on:reload-data="reloadData()"></options-modal>
+        </div>
+    </div>
+</div>

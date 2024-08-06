@@ -1,0 +1,100 @@
+﻿@model CloudSolutions.Surveys.ViewModels.PredefinedListSurveyControlInterviewViewModel
+@using OrchardCore.ContentFields.Settings
+@{
+    var htmlId = Html.IdFor(x => x.Values);
+}
+
+<div class="mb-3 field-wrapper" id="@(htmlId)_FieldWrapper">
+
+    @if (Model.Editor == EditorOption.Radio)
+    {
+        var i = 0;
+        string prefix = Html.IdFor(m => m.Values);
+        <div class="mb-2">
+            <label asp-for="Values" class="fw-bolder@(Model.Title == null ? " sr-only" : String.Empty)">@Model.Title</label>
+
+            @if (!String.IsNullOrEmpty(Model.Hint))
+            {
+                <span class="text-muted">
+                    - <span class="fst-italic">@Model.Hint</span>
+                </span>
+            }
+        </div>
+        <div id="@(htmlId)">
+            @if (Model.Multiple)
+            {
+                foreach (var option in Model.RawOptions)
+                {
+                    var isSelected = Model.Values?.Contains(option.Value) ?? false;
+                    <div class="form-check">
+                        @Html.CheckBox("Values", isSelected, new { value = option.Value, @class = "form-check-input custom-control-input content-preview-text", id = prefix + "_" + i })
+                        <label class="form-check-label custom-control-label" for="@(prefix + "_" + i)">
+                            @option.Name
+                        </label>
+
+                        @if (!string.IsNullOrWhiteSpace(option.Description))
+                        {
+                            <span class="text-warning">
+                                <i class="far fa-question-circle" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="@option.Description"></i>
+                            </span>
+                        }
+                    </div>
+                    i++;
+                }
+            }
+            else
+            {
+                foreach (var option in Model.RawOptions)
+                {
+                    var isSelected = Model.Values?.Contains(option.Value) ?? false;
+
+                    <div class="form-check">
+                        @Html.RadioButton("Values", option.Value, isSelected, new { @class = "form-check-input custom-control-input content-preview-text", id = prefix + "_" + i })
+                        <label class="form-check-label custom-control-label" for="@(prefix + "_" + i)">
+                            @option.Name
+                        </label>
+
+                        @if (!string.IsNullOrWhiteSpace(option.Description))
+                        {
+                            <span class="text-warning">
+                                <i class="far fa-question-circle" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="@option.Description"></i>
+                            </span>
+                        }
+                    </div>
+                    i++;
+                }
+            }
+            <span asp-validation-for="Values" class="text-danger"></span>
+
+        </div>
+    }
+    else if (Model.Editor == EditorOption.Dropdown)
+    {
+        var options = Model.RawOptions?.Select(x => new SelectListItem(x.Name, x.Value)).ToArray();
+        <label asp-for="Values" class="">@Model.Title</label>
+        <select class="form-control content-preview-select" id="@Html.IdFor(x => x.Values)" name="@Html.NameFor(x => x.Values)" @(Model.IsRequired ? "required" : String.Empty) @(Model.Multiple ? "multiple" : String.Empty)>
+            <option value="">@T["None"]</option>
+            @foreach (var option in options)
+            {
+                var isSelected = Model.Values?.Contains(option.Value) ?? false;
+
+                if (isSelected)
+                {
+                    <option value="@option.Value" selected>@option.Text</option>
+                }
+                else
+                {
+                    <option value="@option.Value">@option.Text</option>
+                }
+            }
+        </select>
+
+        <span asp-validation-for="Values" class="text-danger"></span>
+
+        @if (!String.IsNullOrEmpty(Model.Hint))
+        {
+            <span class="hint">@Model.Hint</span>
+        }
+    }
+
+</div>

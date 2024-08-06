@@ -1,0 +1,29 @@
+﻿@model TableCellViewModel
+@{
+    var attributes = new List<string>();
+
+    if (!String.IsNullOrEmpty(Model.BackgroundColor))
+    {
+        attributes.Add($"background-color: {Model.BackgroundColor}");
+    }
+
+    if (!string.IsNullOrEmpty(Model.FontColor))
+    {
+        attributes.Add($"color: {Model.FontColor}");
+    }
+
+    string style = String.Empty;
+
+    if (attributes.Any())
+    {
+        style = $"style=\"{string.Join("; ", attributes)}\"";
+    }
+}
+
+<td class="text-center" @Html.Raw(style)>
+
+    @if (Model.Values != null)
+    {
+        @string.Join("; ", Model.Values)
+    }
+</td>

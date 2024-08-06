@@ -1,0 +1,7 @@
+@using CloudSolutions.Surveys.Workflows.ViewModels
+@using OrchardCore.Workflows.Helpers
+@model InterviewBelowThresholdEventViewModel
+
+<header>
+    <h4><i class="fa fa-exclamation" aria-hidden="true"></i>@Model.Value.GetTitleOrDefault(() => T["Interview Below Threshold"])</h4>
+</header>

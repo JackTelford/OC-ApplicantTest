@@ -1,0 +1,15 @@
+﻿@using CloudSolutions.Surveys.Core.Models
+@using OrchardCore
+
+@model AnonymousSurveyPart
+
+<div class="@Orchard.GetWrapperClasses("field-wrapper")" id="@Html.IdFor(x => x.AllowAnonymous)_FieldWrapper">
+    <div class="@Orchard.GetEndClasses(true)">
+        <div class="form-check">
+            <input type="checkbox" asp-for="AllowAnonymous" class="form-check-input">
+            <label asp-for="AllowAnonymous" class="form-check-label">@T["Allow Anonymous Users"]</label>
+
+            <span class="hint">@T["When checked anyone will be able to complete an interview"]</span>
+        </div>
+    </div>
+</div>

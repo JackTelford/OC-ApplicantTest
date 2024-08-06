@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using OrchardCore
+@using OrchardCore.ContentManagement
+@model CloudSolutions.Surveys.ViewModels.InterviewLinkPartViewModel
+
+@inject IAuthorizationService AuthorizationService
+@inject IContentManager ContentManager
+
+@{
+    var htmlId = Html.IdFor(x => x.Link);
+}
+<div class="@Orchard.GetWrapperClasses()">
+    <label asp-for="Link" class="@Orchard.GetLabelClasses()">@T["Link to start interview"]</label>
+    <div class="@Orchard.GetEndClasses()">
+        <div class="input-group">
+            <!-- Target -->
+            <input asp-for="Link" id="@htmlId" class="form-control custom-checkbox" readonly>
+            <!-- Trigger -->
+            <button class="clipboard-button btn btn-dark" data-clipboard-target="#@htmlId" type="button">
+                <i class="fas fa-copy"></i>
+            </button>
+
+            @if (await ContentManager.HasPublishedVersionAsync(Model.ContentItem) && await AuthorizationService.AuthorizeAsync(User, SurveyPermissions.CompleteInterview))
+            {
+                <a class="btn btn-primary" target="_blank" href="@Model.Link">
+                    @T["Start an interview"]
+                </a>
+            }
+
+        </div>
+    </div>
+</div>

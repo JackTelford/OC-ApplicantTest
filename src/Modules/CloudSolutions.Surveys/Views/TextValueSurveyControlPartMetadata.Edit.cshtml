@@ -1,0 +1,52 @@
+﻿@model CloudSolutions.Surveys.ViewModels.TextValueSurveyControlPartMetadataViewModel
+@using OrchardCore
+@using OrchardCore.ContentFields.Settings
+@{
+    var editorItems = new List<SelectListItem>()
+    {
+        new SelectListItem(EditorOption.Dropdown.ToString(), EditorOption.Dropdown.ToString()),
+        new SelectListItem(EditorOption.Radio.ToString(), EditorOption.Radio.ToString()),
+    };
+
+    var minLengthWrapperId = Html.IdFor(x => x.MinLength) + "_FieldWrapper";
+    var maxLengthWrapperId = Html.IdFor(x => x.MaxLength) + "_FieldWrapper";
+}
+<div class="@Orchard.GetWrapperClasses("field-wrapper")" id="@Html.IdFor(x => x.IsRequired)_FieldWrapper">
+    <div class="@Orchard.GetEndClasses(true)">
+        <div class="form-check">
+            <input type="checkbox" asp-for="IsRequired" class="form-check-input">
+            <label asp-for="IsRequired" class="form-check-label">@T["Required"]</label>
+        </div>
+    </div>
+</div>
+
+<div class="@Orchard.GetWrapperClasses("field-wrapper")" id="@Html.IdFor(x => x.MinLength)_FieldWrapper">
+    <label asp-for="MinLength" class="@Orchard.GetLabelClasses()">@T["Minimum allowed length"]</label>
+    <div class="@Orchard.GetEndClasses()">
+        <input type="number" asp-for="MinLength" class="form-control" step="1" />
+        @T["Leave it blank to have no minimum"]
+    </div>
+</div>
+
+<div class="@Orchard.GetWrapperClasses("field-wrapper")" id="@Html.IdFor(x => x.MaxLength)_FieldWrapper">
+    <label asp-for="MaxLength" class="@Orchard.GetLabelClasses()">@T["Maximum allowed length"]</label>
+    <div class="@Orchard.GetEndClasses()">
+        <input type="number" asp-for="MaxLength" class="form-control" step="1" />
+        @T["Leave it blank to have no maximum"]
+    </div>
+</div>
+
+<div class="@Orchard.GetWrapperClasses("field-wrapper")" id="@Html.IdFor(x => x.Editor)_FieldWrapper">
+    <label asp-for="Editor" class="@Orchard.GetLabelClasses()">@T["Display Format"]</label>
+    <div class="@Orchard.GetEndClasses()">
+        <select class="form-control content-preview-select" asp-for="Editor" asp-items="Model.EditorOptions">
+        </select>
+    </div>
+</div>
+
+<div class="@Orchard.GetWrapperClasses("field-wrapper")" id="@Html.IdFor(x => x.Hint)_FieldWrapper">
+    <label asp-for="Hint" class="@Orchard.GetLabelClasses()">@T["Optional Hint"]</label>
+    <div class="@Orchard.GetEndClasses()">
+        <input asp-for="Hint" class="form-control">
+    </div>
+</div>

@@ -1,0 +1,26 @@
+﻿@model CloudSolutions.Surveys.ViewModels.InterviewPageHeaderViewModel
+
+@{
+    var hasTitle = !string.IsNullOrWhiteSpace(Model.Title);
+    var hasDescription = !string.IsNullOrWhiteSpace(Model.Description);
+}
+
+@if (!hasDescription)
+{
+    return;
+}
+
+<div class="text-bg-default p-3 mb-2 rounded-3">
+    <div class="container">
+        @if (hasTitle)
+        {
+            <h1 class="display-4">@Model.Title</h1>
+        }
+        @if (hasDescription)
+        {
+            <div class="lead">
+                @Html.Raw(Model.Description)
+            </div>
+        }
+    </div>
+</div>

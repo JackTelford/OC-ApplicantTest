@@ -1,0 +1,26 @@
+﻿@model string
+
+@if (!ViewContext.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false)
+    </div>
+
+    <div class="card text-bg-default">
+        <div class="card-body text-center">
+
+            <p>@T["Click"] <a href="~/">@T["here"]</a> @T["to go to the main page."]</p>
+
+            @if (User.HasClaim("Permission", "AccessAdminPanel"))
+            {
+                <p>@T["Click"] <a asp-route-area="OrchardCore.Admin" asp-controller="Admin" asp-action="Index">@T["here"]</a> @T["to go to the dashboard."]</p>
+            }
+        </div>
+
+    </div>
+
+
+    return;
+}
+
+<a asp-action="Start" asp-route-surveyId="@Model" class="btn btn-primary text-center">@T["Start Interview"]</a>

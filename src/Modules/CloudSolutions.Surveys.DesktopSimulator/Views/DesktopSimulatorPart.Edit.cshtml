@@ -1,0 +1,60 @@
+@model CloudSolutions.Surveys.DesktopSimulator.ViewModels.DesktopSimulatorPartViewModel
+
+<style>
+    html, body {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .iframe-container {
+        width: 100%;
+        height: 44rem;
+        border: 2px solid black;
+    }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
+<input type="hidden" asp-for="Events" />
+
+<div class="iframe-container">
+    <iframe src="/CloudSolutions.Surveys.DesktopSimulator/index.html" onload="console.log('iFrame loaded successfully.')" onerror="console.error('Error loading iFrame.');"></iframe>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const eventLogs = [];
+        const form = document.getElementById('interview_page_form');
+        const eventsInputElement = document.getElementById('@Html.IdFor(m => m.Events)');
+
+        if (form) {
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                eventsInputElement.value = JSON.stringify(eventLogs);
+                if (eventLogs.length > 0) {
+                    form.submit();
+                } else {
+                    alert('No events to log');
+                }
+            });
+
+            window.addEventListener('message', (event) => {
+                if (typeof event.data === 'object') {
+                    eventLogs.push(event.data);
+                }
+            });
+        } else {
+            alert('Form element not found. Please refresh the page and try again.');
+        }
+    });
+</script>

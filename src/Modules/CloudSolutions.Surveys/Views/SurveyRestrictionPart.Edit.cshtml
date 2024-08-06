@@ -1,0 +1,85 @@
+@using CloudSolutions.Surveys.Core.Models
+@using OrchardCore
+
+@model CloudSolutions.Surveys.ViewModels.SurveyRestrictionViewModel
+
+@inject IResourceManager ResourceManager
+
+@{
+    ResourceManager.RegisterResource("script", "CrestApps.Components-datetime-picker").AtFoot();
+    ResourceManager.RegisterResource("stylesheet", "CrestApps.Components-datetime-picker").AtHead();
+}
+
+<div class="@Orchard.GetWrapperClasses()">
+    <div class="@Orchard.GetEndClasses(true)">
+        <div class="form-check">
+            <input type="checkbox" asp-for="EnableDailyRestriction" class="form-check-input" data-bs-toggle="collapse" href="#DailyRestrictionsWrapper" role="button" aria-expanded="@Model.EnableDailyRestriction.ToString().ToLowerInvariant()" aria-controls="DailyRestrictionsWrapper">
+            <label asp-for="EnableDailyRestriction" class="form-check-label">@T["Enable Daily Restriction"]</label>
+        </div>
+    </div>
+</div>
+
+<div class="@Orchard.GetWrapperClasses("collapse", Model.EnableDailyRestriction ? "show" : string.Empty)" id="DailyRestrictionsWrapper">
+    <div class="@Orchard.GetEndClasses(true)">
+        <ul class="list-group">
+            @for (var i = 0; i < Model.DailyRestrictions.Length; i++)
+            {
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-2">
+                            @Model.DailyRestrictions[i].Title
+                            @Html.HiddenFor(model => Model.DailyRestrictions[i].DayOfWeek)
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                @Html.LabelFor(model => Model.DailyRestrictions[i].Type, T["Type"].Value, new { @class = "input-group-text" })
+                                @Html.DropDownListFor(model => Model.DailyRestrictions[i].Type, Model.DailyRestrictions[i].Types, new { @class = "form-select daily-restrictions" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex time-range-wrapper@(Model.DailyRestrictions[i].Type == DailyRestrictionType.LimitTime ? string.Empty : " d-none")">
+                                <div class="input-group me-2">
+                                    @Html.LabelFor(model => Model.DailyRestrictions[i].From, T["From"].Value, new { @class = "input-group-text" })
+                                    @Html.TextBoxFor(model => Model.DailyRestrictions[i].From,
+                                             new
+                                             {
+                                                 @class = "form-control time-range-selector-from",
+                                                 type = "time",
+                                                 DataTargetTo = Html.IdFor(x => Model.DailyRestrictions[i].To),
+                                             })
+                                </div>
+
+                                <div class="input-group">
+                                    @Html.LabelFor(model => Model.DailyRestrictions[i].To, T["To"].Value, new { @class = "input-group-text" })
+                                    @Html.TextBoxFor(model => Model.DailyRestrictions[i].To,
+                                             new
+                                             {
+                                                 @class = "form-control time-range-selector-to",
+                                                 type = "time",
+                                                 DataTargetFrom = Html.IdFor(x => Model.DailyRestrictions[i].From)
+                                             })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<script at="Foot">
+    document.addEventListener('DOMContentLoaded', () => {
+        var pickers = document.getElementsByClassName('daily-restrictions');
+
+        for (var i = 0; i < pickers.length; i++) {
+            pickers[i].addEventListener('change', (e) => {
+                if (e.target.value == '@nameof(DailyRestrictionType.LimitTime)') {
+                    e.target.closest('li').querySelector('.time-range-wrapper').classList.remove('d-none');
+                } else {
+                    e.target.closest('li').querySelector('.time-range-wrapper').classList.add('d-none');
+                }
+            });
+        }
+    });
+</script>

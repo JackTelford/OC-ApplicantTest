@@ -1,0 +1,20 @@
+﻿@model OrchardCore.Layers.ViewModels.WidgetWrapper
+@using OrchardCore.Layers.Models
+@using OrchardCore.ContentManagement
+
+@{
+    var layerMetadata = Model.Widget.As<LayerMetadata>();
+}
+
+<div class="card text-bg-default mb-3">
+    @if (layerMetadata.RenderTitle)
+    {
+        <div class="card-header">
+            @Model.Widget.DisplayText
+        </div>
+    }
+
+    <div class="card-body">
+        @await DisplayAsync(Model.Content)
+    </div>
+</div>

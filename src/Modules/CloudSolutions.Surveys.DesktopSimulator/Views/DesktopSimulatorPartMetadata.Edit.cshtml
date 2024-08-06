@@ -1,0 +1,139 @@
+@using OrchardCore.ContentFields.Settings
+@using CloudSolutions.Surveys.DesktopSimulator.ViewModels
+@model DesktopSimulatorPartMetadataViewModel
+@using OrchardCore
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var checkboxes = document.querySelectorAll('.form-check-input[type="checkbox"]');
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                var weightContainer = document.getElementById(checkbox.id + 'WeightContainer');
+                if (weightContainer) {
+                    weightContainer.style.display = checkbox.checked ? 'block' : 'none';
+                    var weightInput = document.getElementById(checkbox.id + 'Weight');
+                    if (!checkbox.checked && weightInput) {
+                        weightInput.value = 0;
+                    }
+                }
+            });
+            var weightContainer = document.getElementById(checkbox.id + 'WeightContainer');
+            if (weightContainer) {
+                weightContainer.style.display = checkbox.checked ? 'block' : 'none';
+            }
+        });
+    });
+
+</script>
+
+<div class="mb-3">
+    <div class="form-check">
+        <input type="checkbox" asp-for="EmailSent" class="form-check-input" id="EmailSent" />
+        <label asp-for="EmailSent" class="form-check-label">@T["Want to track if Email has been sent?"]</label>
+    </div>
+    <span asp-validation-for="EmailSent" class="text-danger"></span>
+</div>
+
+<div class="mb-3" id="EmailSentWeightContainer">
+    <label asp-for="EmailSentWeight" class="form-label">@T["Email Sent Score"]</label>
+    <input type="number" min="0" asp-for="EmailSentWeight" class="form-control" id="EmailSentWeight" />
+    <span asp-validation-for="EmailSentWeight" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <div class="form-check">
+        <input type="checkbox" asp-for="MessageSentToAsakoSatoshi" class="form-check-input" id="MessageSentToAsakoSatoshi" />
+        <label asp-for="MessageSentToAsakoSatoshi" class="form-check-label">@T["Message Sent To Asako Satoshi?"]</label>
+    </div>
+    <span asp-validation-for="MessageSentToAsakoSatoshi" class="text-danger"></span>
+</div>
+
+<div class="mb-3" id="MessageSentToAsakoSatoshiWeightContainer">
+    <label asp-for="MessageSentToAsakoSatoshiWeight" class="form-label">@T["Message Sent To Asako Satoshi Score"]</label>
+    <input type="number" min="0" asp-for="MessageSentToAsakoSatoshiWeight" class="form-control" id="MessageSentToAsakoSatoshiWeight" />
+    <span asp-validation-for="MessageSentToAsakoSatoshiWeight" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <div class="form-check">
+        <input type="checkbox" asp-for="MessageSentToLilyWang" class="form-check-input" id="MessageSentToLilyWang" />
+        <label asp-for="MessageSentToLilyWang" class="form-check-label">@T["Message Sent To Lily Wang?"]</label>
+    </div>
+    <span asp-validation-for="MessageSentToLilyWang" class="text-danger"></span>
+</div>
+
+<div class="mb-3" id="MessageSentToLilyWangWeightContainer">
+    <label asp-for="MessageSentToLilyWangWeight" class="form-label">@T["Message Sent To Lily Wang Score"]</label>
+    <input type="number" min="0" asp-for="MessageSentToLilyWangWeight" class="form-control" id="MessageSentToLilyWangWeight" />
+    <span asp-validation-for="MessageSentToLilyWangWeight" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <div class="form-check">
+        <input type="checkbox" asp-for="MessageSentToMadisonByers" class="form-check-input" id="MessageSentToMadisonByers" />
+        <label asp-for="MessageSentToMadisonByers" class="form-check-label">@T["Message Sent To Madison Byers?"]</label>
+    </div>
+    <span asp-validation-for="MessageSentToMadisonByers" class="text-danger"></span>
+</div>
+
+<div class="mb-3" id="MessageSentToMadisonByersWeightContainer">
+    <label asp-for="MessageSentToMadisonByersWeight" class="form-label">@T["Message Sent To Madison Byers Score"]</label>
+    <input type="number" min="0" asp-for="MessageSentToMadisonByersWeight" class="form-control" id="MessageSentToMadisonByersWeight" />
+    <span asp-validation-for="MessageSentToMadisonByersWeight" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <div class="form-check">
+        <input type="checkbox" asp-for="MessageSentToDominicGonzalez" class="form-check-input" id="MessageSentToDominicGonzalez" />
+        <label asp-for="MessageSentToDominicGonzalez" class="form-check-label">@T["Message Sent To Dominic Gonzalez?"]</label>
+    </div>
+    <span asp-validation-for="MessageSentToDominicGonzalez" class="text-danger"></span>
+</div>
+
+<div class="mb-3" id="MessageSentToDominicGonzalezWeightContainer">
+    <label asp-for="MessageSentToDominicGonzalezWeight" class="form-label">@T["Message Sent To Dominic Gonzalez Score"]</label>
+    <input type="number" min="0" asp-for="MessageSentToDominicGonzalezWeight" class="form-control" id="MessageSentToDominicGonzalezWeight" />
+    <span asp-validation-for="MessageSentToDominicGonzalezWeight" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <div class="form-check">
+        <input type="checkbox" asp-for="MessageSentToSimoneKhan" class="form-check-input" id="MessageSentToSimoneKhan" />
+        <label asp-for="MessageSentToSimoneKhan" class="form-check-label">@T["Message Sent To Simone Khan?"]</label>
+    </div>
+    <span asp-validation-for="MessageSentToSimoneKhan" class="text-danger"></span>
+</div>
+
+<div class="mb-3" id="MessageSentToSimoneKhanWeightContainer">
+    <label asp-for="MessageSentToSimoneKhanWeight" class="form-label">@T["Message Sent To Simone Khan Score"]</label>
+    <input type="number" min="0" asp-for="MessageSentToSimoneKhanWeight" class="form-control" id="MessageSentToSimoneKhanWeight" />
+    <span asp-validation-for="MessageSentToSimoneKhanWeight" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <div class="form-check">
+        <input type="checkbox" asp-for="BookmarkClicked" class="form-check-input" id="BookmarkClicked" />
+        <label asp-for="BookmarkClicked" class="form-check-label">@T["Want to track if Bookmark is clicked?"]</label>
+    </div>
+    <span asp-validation-for="BookmarkClicked" class="text-danger"></span>
+</div>
+
+<div class="mb-3" id="BookmarkClickedWeightContainer">
+    <label asp-for="BookmarkClickedWeight" class="form-label">@T["Bookmark Clicked Score"]</label>
+    <input type="number" min="0" asp-for="BookmarkClickedWeight" class="form-control" id="BookmarkClickedWeight" />
+    <span asp-validation-for="BookmarkClickedWeight" class="text-danger"></span>
+</div>
+
+@* <div class="mb-3">
+    <div class="form-check">
+        <input type="checkbox" asp-for="FormSubmitted" class="form-check-input" id="FormSubmitted" />
+        <label asp-for="FormSubmitted" class="form-check-label">@T["Want to track if Form is submitted?"]</label>
+    </div>
+    <span asp-validation-for="FormSubmitted" class="text-danger"></span>
+</div>
+
+<div class="mb-3" id="FormSubmittedWeightContainer">
+    <label asp-for="FormSubmittedWeight" class="form-label">@T["Form Submitted Score"]</label>
+    <input type="number" min="0" asp-for="FormSubmittedWeight" class="form-control" id="FormSubmittedWeight" />
+    <span asp-validation-for="FormSubmittedWeight" class="text-danger"></span>
+</div> *@
