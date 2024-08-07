@@ -1,5 +1,5 @@
 {
-  "name": "cloudsolutions.surveys.desktopsimulator",
+  "name": "applicanttest",
   "version": "1.0.0",
   "scripts": {
     "preinstall": "yarn global add yarn@latest",

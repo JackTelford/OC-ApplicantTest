@@ -12,7 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OC-ApplicantTest.Web", "src\OC-ApplicantTest.Web\OC-ApplicantTest.Web.csproj", "{E12725FE-DC79-40CF-BA36-393B7BD8E19F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8F741326-7FF5-407C-9222-7032970C18E4} = {8F741326-7FF5-407C-9222-7032970C18E4}
-		{BD344FD9-01FB-4831-8B84-DDCFBE6BB53E} = {BD344FD9-01FB-4831-8B84-DDCFBE6BB53E}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CloudSolutions.Surveys.DesktopSimulator", "src\Modules\CloudSolutions.Surveys.DesktopSimulator\CloudSolutions.Surveys.DesktopSimulator.csproj", "{BD344FD9-01FB-4831-8B84-DDCFBE6BB53E}"
